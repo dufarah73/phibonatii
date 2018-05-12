@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">Phibonatii</string>
+    <string name="activity_login_name">Login</string>
+    <string name="activity_change_password_name">Change Password</string>
+    <string name="activity_join_name">Join</string>
+
+    <string name="title_activity_desktop">Desktop</string>
+
+    <string name="button_login">Login</string>
+    <string name="button_change_password">Change Password</string>
+    <string name="button_join">Join</string>
+    <string name="button_retrieve_passasking">Retrieve Pass Asking</string>
+
+    <string name="hint_nickname">Nickname</string>
+    <string name="hint_fullname">Full Name</string>
+    <string name="hint_dateborn">Date Born</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_new_password">New Password</string>
+    <string name="hint_passasking">Asking</string>
+    <string name="hint_passanswer">Answer</string>
+    <string name="hint_personal_question">Personal Question - Used only when forget password</string>
+
+    <string name="action_password">Enter Password</string>
+
+    <string name="text_information_change_password">If forgot password:</string>
+    <string name="text_information_join">If nickname is not registred:</string>
+    <string name="text_information_join2">Make sure the ALL 5 data entered above is typed correctly. They can NEVER MORE be changed again.</string>
+
+</resources>
