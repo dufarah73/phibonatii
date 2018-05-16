@@ -3,13 +3,16 @@
     <string name="activity_login_name">Login</string>
     <string name="activity_change_password_name">Change Password</string>
     <string name="activity_join_name">Join</string>
-
-    <string name="title_activity_desktop">Desktop</string>
+    <string name="activity_desktop">*</string>
 
     <string name="button_login">Login</string>
     <string name="button_change_password">Change Password</string>
     <string name="button_join">Join</string>
     <string name="button_retrieve_passasking">Retrieve Pass Asking</string>
+    <string name="button_new_group">New Group</string>
+    <string name="button_find_group">Find Group</string>
+    <string name="button_leave_group">Leave Group</string>
+    <string name="button_logout">Logout</string>
 
     <string name="hint_nickname">Nickname</string>
     <string name="hint_fullname">Full Name</string>

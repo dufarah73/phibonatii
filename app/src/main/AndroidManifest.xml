@@ -26,7 +26,7 @@
         <activity android:name=".ChangePasswordActivity" />
         <activity
             android:name=".DesktopActivity"
-            android:label="@string/title_activity_desktop">
+            android:label="@string/activity_desktop">
         </activity>
     </application>
 
