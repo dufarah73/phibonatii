@@ -4,6 +4,7 @@
     <string name="activity_change_password_name">Change Password</string>
     <string name="activity_join_name">Join</string>
     <string name="activity_desktop">*</string>
+    <string name="activity_main">Dashboard</string>
 
     <string name="button_login">Login</string>
     <string name="button_change_password">Change Password</string>
@@ -28,5 +29,7 @@
     <string name="text_information_change_password">If forgot password:</string>
     <string name="text_information_join">If nickname is not registred:</string>
     <string name="text_information_join2">Make sure the ALL 5 data entered above is typed correctly. They can NEVER MORE be changed again.</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 
 </resources>
