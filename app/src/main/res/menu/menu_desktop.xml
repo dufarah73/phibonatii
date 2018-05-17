@@ -4,22 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DesktopActivity">
     <item
-        android:id="@+id/desktop_menu_mybona"
-        android:title="MY BONA"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/desktop_menu_mytii"
-        android:title="MY TII"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/desktop_menu_radar"
-        android:title="RADAR"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/desktop_menu_ranking"
-        android:title="RANKING"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/desktop_menu_new_group"
         android:title="@string/button_new_group"/>
     <item

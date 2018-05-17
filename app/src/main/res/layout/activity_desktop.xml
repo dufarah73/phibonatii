@@ -11,41 +11,71 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".DesktopActivity">
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/desktop_tab_ops"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RADAR" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="RANKING" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BONA" />
+    </android.support.design.widget.TabLayout>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/desktop_tab_groups"
+        android:layout_width="match_parent"
+        android:layout_height="21dp"
+        android:background="?attr/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Left" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Center" />
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Right" />
+    </android.support.design.widget.TabLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
             <ListView
-                android:id="@+id/desktop_lista_alunos"
+                android:id="@+id/desktop_item1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <ListView
-                android:id="@+id/desktop_lista_alunos2"
+                android:id="@+id/desktop_item2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/desktop_lista_alunos" />
+                android:layout_height="wrap_content"/>
 
-            <Button
-                android:id="@+id/desktop_button_hide_bona"
-                android:layout_width="56dp"
-                android:layout_height="56dp"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/custom_background"
-                android:elevation="6dp"
-                android:onClick="hideBona"
-                android:stateListAnimator="@null"
-                android:text="+"
-                android:textColor="#ffffff"
-                android:textSize="40sp" />
-
-        </RelativeLayout>
+        </LinearLayout>
 
     </ScrollView>
 </LinearLayout>
