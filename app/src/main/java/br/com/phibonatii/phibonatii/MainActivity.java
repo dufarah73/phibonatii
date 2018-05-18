@@ -4,39 +4,58 @@ import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Spinner;
-import android.content.Context;
-import android.support.v7.widget.ThemedSpinnerAdapter;
-import android.content.res.Resources.Theme;
-
-import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
+import java.util.ArrayList;
+
+import br.com.phibonatii.phibonatii.adapter.BonaAdapter;
+import br.com.phibonatii.phibonatii.adapter.RadarAdapter;
+import br.com.phibonatii.phibonatii.adapter.RankingAdapter;
+import br.com.phibonatii.phibonatii.model.Bona;
+import br.com.phibonatii.phibonatii.model.Radar;
+import br.com.phibonatii.phibonatii.model.Ranking;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Context myContext;
+    private ListView objectList;
+    private List<Radar> radarList;
+    private List<Ranking> rankingList;
+    private List<Bona> bonaList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        myContext = this;
+
+        objectList = (ListView) findViewById(R.id.listview);
+
+        radarList = new ArrayList<Radar>();
+        radarList.add(new Radar(Long.valueOf(25),"7 Bona - 290 Tii","Num raio de 5 metros"));
+        radarList.add(new Radar(Long.valueOf(26), "48 Bona - 7448 Tii", "Num raio de 8 metros"));
+        radarList.add(new Radar(Long.valueOf(27), "70 Bona - 8299 Tii", "Num raio de 13 metros"));
+        radarList.add(new Radar(Long.valueOf(28), "186 Bona - 18589 Tii", "Num raio de 21 metros"));
+        radarList.add(new Radar(Long.valueOf(28), "357 Bona - 85009 Tii", "Num raio de 34 metros"));
+        rankingList = new ArrayList<Ranking>();
+        rankingList.add(new Ranking(Long.valueOf(35),"MAICON - 8300 Tii","Maicon da Siva Viana"));
+        rankingList.add(new Ranking(Long.valueOf(36), "COX4893 - 743 Tii", "Eduardo Cox"));
+        rankingList.add(new Ranking(Long.valueOf(37), "JAIR - 55 Tii", "José Antonio Imair Ramos"));
+        bonaList = new ArrayList<Bona>();
+        bonaList.add(new Bona(Long.valueOf(15),"Presente - 370 Tii","Presente para maria"));
+        bonaList.add(new Bona(Long.valueOf(16), "Cigarro - 433 Tii", "Roxo"));
+        bonaList.add(new Bona(Long.valueOf(17), "Jujuba - 155 Tii", "Pacote de jujuba sortida"));
+        bonaList.add(new Bona(Long.valueOf(17), "Pacote - 42 Tii", "Embrulho de fogos"));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -50,7 +69,17 @@ public class MainActivity extends AppCompatActivity {
                 TabLayout tb = (TabLayout) findViewById(R.id.tabs);
                 int myTabPosition = tb.getSelectedTabPosition();
                 int mySpinnerPosition = position;
-                Toast.makeText(myContext, "spi -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
+
+                if (mySpinnerPosition == 0) {
+                    displayListRadar(radarList);
+                } else
+                if (mySpinnerPosition == 1) {
+                    displayListRanking(rankingList);
+                } else {
+                    displayListBona(bonaList);
+                };
+
+                Toast.makeText(tb.getContext(), "spi -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -65,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                 Spinner sp = (Spinner) findViewById(R.id.spinner);
                 int mySpinnerPosition = sp.getSelectedItemPosition();
                 int myTabPosition = tab.getPosition();
-                Toast.makeText(myContext, "tab -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
+                Toast.makeText(sp.getContext(), "tab -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -76,10 +105,10 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        tabLayout.addTab(tabLayout.newTab().setText("FAMILIA"));
+        tabLayout.addTab(tabLayout.newTab().setText("ESCOLA"));
+        tabLayout.addTab(tabLayout.newTab().setText("TRABALHO"));
         tabLayout.addTab(tabLayout.newTab().setText("GLOBAL"));
-        tabLayout.addTab(tabLayout.newTab().setText("FAMILIAX"));
-        tabLayout.addTab(tabLayout.newTab().setText("ESCOLAX"));
-        tabLayout.addTab(tabLayout.newTab().setText("TRABALHOX"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +117,21 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
+    }
 
+    private void displayListRadar(List<Radar> objects) {
+        RadarAdapter adapter = new RadarAdapter(this, objects);
+        objectList.setAdapter(adapter);
+    }
+
+    private void displayListRanking(List<Ranking> objects) {
+        RankingAdapter adapter = new RankingAdapter(this, objects);
+        objectList.setAdapter(adapter);
+    }
+
+    private void displayListBona(List<Bona> objects) {
+        BonaAdapter adapter = new BonaAdapter(this, objects);
+        objectList.setAdapter(adapter);
     }
 
     public void changePassword() {
