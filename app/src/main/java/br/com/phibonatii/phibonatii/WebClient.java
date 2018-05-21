@@ -17,11 +17,21 @@ interface IResponseJoin {
     public void onPostExecute(Context context, String serverError, List<String> nicknameErros, List<String> fullNameErros, List<String> dateBornErros, List<String> passAskingErros, List<String> passAnswerErros, List<String> passwordErros);
 }
 
+interface IResponseNewGroup {
+    public void onPostExecute(Context context, int groupId, String groupShortName, String serverError, List<String> shortNameErros, List<String> longNameErros);
+}
+
+interface IResponseFindGroup {
+    public void onPostExecute(Context context, List<Integer> groupIds, List<String> groupNames, String serverError);
+}
+
 public class WebClient {
 
     public Context context;
     private IResponseLogin responseLogin;
     private IResponseJoin responseJoin;
+    private IResponseNewGroup responseNewGroup;
+    private IResponseFindGroup responseFindGroup;
     public String jsonReturned;
 
     public WebClient(Context context) {
@@ -56,12 +66,41 @@ public class WebClient {
         new WebClientTask(this, "join", jsonObject.toString().replace("'","*").replace("\"","'")).execute();
     }
 
+    public void newGroup(String shortName, String longName, IResponseNewGroup responseNewGroup) {
+        this.responseNewGroup = responseNewGroup;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("shortName", shortName);
+            jsonObject.put("longName", longName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "newgroup", jsonObject.toString().replace("'","*").replace("\"","'")).execute();
+    }
+
+    public void findGroup(String searchText, IResponseFindGroup responseFindGroup) {
+        this.responseFindGroup = responseFindGroup;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("searchText", searchText);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "findgroup", jsonObject.toString().replace("'","*").replace("\"","'")).execute();
+    }
+
     public void onPostExecute(String resposta) {
         jsonReturned = resposta;
 
         JSONObject jsonObject = null;
+        JSONArray arr;
 
         String token = "";
+        int groupId = 0;
+        String groupShortName = "";
+        List<Integer> groupIds = new ArrayList<Integer>();
+        List<String> groupNames = new ArrayList<String>();
+
         String error = "";
         JSONObject errors = null;
 
@@ -71,6 +110,8 @@ public class WebClient {
         List<String> passAskingErros = new ArrayList<String> ();
         List<String> passAnswerErros = new ArrayList<String> ();
         List<String> passwordErros = new ArrayList<String> ();
+        List<String> shortNameErros = new ArrayList<String>();
+        List<String> longNameErros = new ArrayList<String>();
 
         try {
             jsonObject = new JSONObject(this.jsonReturned);
@@ -81,11 +122,26 @@ public class WebClient {
         if (jsonObject != null) {
             token = jsonObject.optString("Token");
 
+            groupId = jsonObject.optInt("GroupID");
+            groupShortName = jsonObject.optString("GroupShortName");
+
+            arr = jsonObject.optJSONArray("GroupIDs");
+            if (arr != null) {
+                for (int i = 0; i < arr.length(); i++) {
+                    groupIds.add(arr.optInt(i));
+                }
+            }
+            arr = jsonObject.optJSONArray("GroupNames");
+            if (arr != null) {
+                for (int i = 0; i < arr.length(); i++) {
+                    groupNames.add(arr.optString(i));
+                }
+            }
+
             error = jsonObject.optString("Error");
             errors = jsonObject.optJSONObject("Errors");
 
             if (errors != null) {
-                JSONArray arr;
                 arr = errors.optJSONArray("Nickname");
                 if (arr != null) {
                     for (int i = 0; i < arr.length(); i++) {
@@ -122,6 +178,18 @@ public class WebClient {
                         passwordErros.add(arr.optString(i));
                     }
                 }
+                arr = errors.optJSONArray("Short Name");
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
+                        shortNameErros.add(arr.optString(i));
+                    }
+                }
+                arr = errors.optJSONArray("Long Name");
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
+                        longNameErros.add(arr.optString(i));
+                    }
+                }
             }
         }
 
@@ -130,6 +198,12 @@ public class WebClient {
         }
         if (responseJoin != null) {
             responseJoin.onPostExecute(context, error, nicknameErros, fullNameErros, dateBornErros, passAskingErros, passAnswerErros, passwordErros);
+        }
+        if (responseNewGroup != null) {
+            responseNewGroup.onPostExecute(context, groupId, groupShortName, error, shortNameErros, longNameErros);
+        }
+        if (responseFindGroup != null) {
+            responseFindGroup.onPostExecute(context, groupIds, groupNames, error);
         }
     }
 

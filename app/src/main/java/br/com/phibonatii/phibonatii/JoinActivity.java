@@ -12,7 +12,7 @@ import java.util.List;
 
 public class JoinActivity extends AppCompatActivity {
 
-    public EditText fieldNickName;
+    public EditText fieldNickname;
     public EditText fieldFullName;
     public EditText fieldDateBorn;
     public EditText fieldPassAsking;
@@ -32,14 +32,14 @@ public class JoinActivity extends AppCompatActivity {
         setContentView(R.layout.activity_join);
     }
     private void getFields() {
-        fieldNickName = (EditText) this.findViewById(R.id.join_edit_nickname);
+        fieldNickname = (EditText) this.findViewById(R.id.join_edit_nickname);
         fieldFullName = (EditText) this.findViewById(R.id.join_edit_fullname);
         fieldDateBorn = (EditText) this.findViewById(R.id.join_edit_dateborn);
         fieldPassAsking = (EditText) this.findViewById(R.id.join_edit_passasking);
         fieldPassAnswer = (EditText) this.findViewById(R.id.join_edit_passanswer);
         fieldPassword = (EditText) this.findViewById(R.id.join_edit_password);
 
-        fieldNickName.setBackgroundColor(Color.parseColor("#ffffff"));
+        fieldNickname.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldFullName.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldDateBorn.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldPassAsking.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -48,7 +48,7 @@ public class JoinActivity extends AppCompatActivity {
     }
     private void getValues() {
         getFields();
-        nickName = fieldNickName.getText().toString();
+        nickName = fieldNickname.getText().toString();
         fullName = fieldFullName.getText().toString();
         dateBorn = fieldDateBorn.getText().toString();
         passAsking = fieldPassAsking.getText().toString();
@@ -80,7 +80,7 @@ class ResponseJoin implements IResponseJoin {
                 for (String s : nicknameErros) {
                     msgErros = msgErros + s + "\t";
                 }
-                app.fieldNickName.setBackgroundColor(Color.parseColor("#ff0000"));
+                app.fieldNickname.setBackgroundColor(Color.parseColor("#ff0000"));
             }
             if (!fullNameErros.isEmpty()) {
                 msgErros += "Full Name: ";

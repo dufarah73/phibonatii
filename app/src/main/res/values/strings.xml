@@ -10,8 +10,9 @@
     <string name="button_change_password">Change Password</string>
     <string name="button_join">Join</string>
     <string name="button_retrieve_passasking">Retrieve Pass Asking</string>
-    <string name="button_new_group">New Group</string>
+    <string name="button_new_group">Create and Meet the New Group</string>
     <string name="button_find_group">Find Group</string>
+    <string name="button_meet">Meet Group</string>
     <string name="button_leave_group">Leave Group</string>
     <string name="button_logout">Logout</string>
 
@@ -23,6 +24,9 @@
     <string name="hint_passasking">Asking</string>
     <string name="hint_passanswer">Answer</string>
     <string name="hint_personal_question">Personal Question - Used only when forget password</string>
+    <string name="hint_shortname">Short Name (max 30 char)</string>
+    <string name="hint_longname">Long Name (max 900 char)</string>
+    <string name="hint_searchtext">Search Text</string>
 
     <string name="action_password">Enter Password</string>
 

@@ -18,7 +18,6 @@
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -26,11 +25,13 @@
         <activity android:name=".ChangePasswordActivity" />
         <activity
             android:name=".DesktopActivity"
-            android:label="@string/activity_desktop"></activity>
+            android:label="@string/activity_desktop" />
         <activity
             android:name=".MainActivity"
             android:label="@string/activity_main"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FindGroupActivity" />
+        <activity android:name=".NewGroupActivity" />
     </application>
 
 </manifest>
