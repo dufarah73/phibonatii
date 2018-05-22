@@ -29,6 +29,8 @@ import br.com.phibonatii.phibonatii.model.Ranking;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String token;
+
     private ListView objectList;
     private List<Radar> radarList;
     private List<Ranking> rankingList;
@@ -38,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        token = getIntent().getStringExtra("token");
 
         objectList = (ListView) findViewById(R.id.listview);
 
@@ -134,8 +138,27 @@ public class MainActivity extends AppCompatActivity {
         objectList.setAdapter(adapter);
     }
 
+    public void newGroup() {
+        Intent intent = new Intent(this, NewGroupActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
+    public void findGroup() {
+        Intent intent = new Intent(this, FindGroupActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
+    public void leaveGroup() {
+        Intent intent = new Intent(this, FindGroupActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
     public void changePassword() {
         Intent intent = new Intent(this, ChangePasswordActivity.class);
+        intent.putExtra("token", token);
         startActivity(intent);
     }
 
@@ -148,6 +171,18 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.main_menu_new_group: {
+                newGroup();
+                break;
+            }
+            case R.id.main_menu_find_group: {
+                findGroup();
+                break;
+            }
+            case R.id.main_menu_leave_group: {
+                leaveGroup();
+                break;
+            }
             case R.id.main_menu_change_password: {
                 changePassword();
                 break;

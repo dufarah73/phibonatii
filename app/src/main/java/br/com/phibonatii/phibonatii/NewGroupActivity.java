@@ -12,6 +12,8 @@ import java.util.List;
 
 public class NewGroupActivity extends AppCompatActivity {
 
+    private String token;
+
     public EditText fieldShortName;
     public EditText fieldLongName;
 
@@ -22,7 +24,10 @@ public class NewGroupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_group);
+
+        token = getIntent().getStringExtra("token");
     }
+
     private void getFields() {
         fieldShortName = (EditText) this.findViewById(R.id.newgr_edit_shortname);
         fieldLongName = (EditText) this.findViewById(R.id.newgr_edit_longname);
@@ -42,7 +47,7 @@ public class NewGroupActivity extends AppCompatActivity {
     public void newGroup(View view) {
         if (toValidate()) {
             WebClient webClient = new WebClient(this);
-            webClient.newGroup(shortName, longName, new ResponseNewGroup());
+            webClient.newGroup(token, shortName, longName, new ResponseNewGroup());
         }
     }
 }

@@ -58,8 +58,8 @@ class ResponseLogin implements IResponseLogin {
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(context, token, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(app, MainActivity.class);
+            intent.putExtra("token",token);
             app.startActivity(intent);
         }
     }

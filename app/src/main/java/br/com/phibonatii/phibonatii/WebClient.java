@@ -66,10 +66,11 @@ public class WebClient {
         new WebClientTask(this, "join", jsonObject.toString().replace("'","*").replace("\"","'")).execute();
     }
 
-    public void newGroup(String shortName, String longName, IResponseNewGroup responseNewGroup) {
+    public void newGroup(String token, String shortName, String longName, IResponseNewGroup responseNewGroup) {
         this.responseNewGroup = responseNewGroup;
         JSONObject jsonObject = new JSONObject();
         try {
+            jsonObject.put("token", token);
             jsonObject.put("shortName", shortName);
             jsonObject.put("longName", longName);
         } catch (JSONException e) {
