@@ -61,14 +61,14 @@ class ResponseNewGroup implements IResponseNewGroup {
             msgErros = "Erro no servidor:" + "\t" + serverError + "\t";
         } else {
             if (!shortNameErros.isEmpty()) {
-                msgErros += "Nickname: ";
+                msgErros += "Short Name: ";
                 for (String s : shortNameErros) {
                     msgErros = msgErros + s + "\t";
                 }
                 app.fieldShortName.setBackgroundColor(Color.parseColor("#ff0000"));
             }
             if (!longNameErros.isEmpty()) {
-                msgErros += "Full Name: ";
+                msgErros += "Long Name: ";
                 for (String s : longNameErros) {
                     msgErros = msgErros + s + "\t";
                 }
@@ -82,6 +82,8 @@ class ResponseNewGroup implements IResponseNewGroup {
         if (msgErros != "") {
             Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
         } else {
+            app.getIntent().putExtra("groupid", groupId);
+            app.getIntent().putExtra("groupshortname", groupShortName);
             app.finish();
         }
     }

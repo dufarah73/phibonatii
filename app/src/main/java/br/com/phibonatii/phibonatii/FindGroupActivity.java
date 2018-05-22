@@ -46,14 +46,14 @@ public class FindGroupActivity extends AppCompatActivity {
 }
 
 class ResponseFindGroup implements IResponseFindGroup {
-    public void onPostExecute(Context context, List<Integer> groupIds, List<String> groupNames, String serverError) {
+    public void onPostExecute(Context context, List<String> groups, String serverError) {
         FindGroupActivity app = (FindGroupActivity) context;
 
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
             Spinner spinner = (Spinner) app.findViewById(R.id.findgr_spinner_groups);
-            spinner.setAdapter(new ArrayAdapter<String>(app, android.R.layout.simple_list_item_1, groupNames));
+            spinner.setAdapter(new ArrayAdapter<String>(app, android.R.layout.simple_list_item_1, groups));
         }
     }
 }

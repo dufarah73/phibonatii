@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+
 public class LoginActivity extends AppCompatActivity {
 
     public EditText fieldNickName;
@@ -41,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void change_password(View view) {
+    public void changePassword(View view) {
         Intent intent = new Intent(this, ChangePasswordActivity.class);
         startActivity(intent);
     }
@@ -52,7 +54,7 @@ public class LoginActivity extends AppCompatActivity {
 }
 
 class ResponseLogin implements IResponseLogin {
-    public void onPostExecute(Context context, String token, String serverError) {
+    public void onPostExecute(Context context, String token, List<String> groups, String serverError) {
         LoginActivity app = (LoginActivity) context;
 
         if (serverError != "") {
@@ -60,6 +62,7 @@ class ResponseLogin implements IResponseLogin {
         } else {
             Intent intent = new Intent(app, MainActivity.class);
             intent.putExtra("token",token);
+            intent.putExtra("groups", groups.toArray(new String[groups.size()]));
             app.startActivity(intent);
         }
     }

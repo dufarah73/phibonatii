@@ -6,11 +6,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
 
 interface IResponseLogin {
-    public void onPostExecute(Context context, String token, String serverError);
+    public void onPostExecute(Context context, String token, List<String> groups, String serverError);
 }
 
 interface IResponseJoin {
@@ -22,7 +24,7 @@ interface IResponseNewGroup {
 }
 
 interface IResponseFindGroup {
-    public void onPostExecute(Context context, List<Integer> groupIds, List<String> groupNames, String serverError);
+    public void onPostExecute(Context context, List<String> groups, String serverError);
 }
 
 public class WebClient {
@@ -38,6 +40,11 @@ public class WebClient {
         this.context = context;
     }
 
+    private String JSONObjectToString(JSONObject jsonObject) {
+        return jsonObject.toString().replace("\"","%22").replace("+","%2B").replace("=","%3D").replace(":","%3A").replace(",","%2C").replace(" ","%20");
+//        jsonObject.toString().replace("'","*").replace("\"","'");
+    }
+
     public void login(String nickName, String password, IResponseLogin responseLogin) {
         this.responseLogin = responseLogin;
         JSONObject jsonObject = new JSONObject();
@@ -47,7 +54,7 @@ public class WebClient {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        new WebClientTask(this, "login", jsonObject.toString().replace("\"","'")).execute();
+        new WebClientTask(this, "login", JSONObjectToString(jsonObject)).execute();
     }
 
     public void join(String nickName, String fullName, String dateBorn, String passAsking, String passAnswer, String password, IResponseJoin responseJoin) {
@@ -63,7 +70,7 @@ public class WebClient {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        new WebClientTask(this, "join", jsonObject.toString().replace("'","*").replace("\"","'")).execute();
+        new WebClientTask(this, "join", JSONObjectToString(jsonObject)).execute();
     }
 
     public void newGroup(String token, String shortName, String longName, IResponseNewGroup responseNewGroup) {
@@ -76,7 +83,7 @@ public class WebClient {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        new WebClientTask(this, "newgroup", jsonObject.toString().replace("'","*").replace("\"","'")).execute();
+        new WebClientTask(this, "newgroup", JSONObjectToString(jsonObject)).execute();
     }
 
     public void findGroup(String searchText, IResponseFindGroup responseFindGroup) {
@@ -87,7 +94,7 @@ public class WebClient {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        new WebClientTask(this, "findgroup", jsonObject.toString().replace("'","*").replace("\"","'")).execute();
+        new WebClientTask(this, "findgroup", JSONObjectToString(jsonObject)).execute();
     }
 
     public void onPostExecute(String resposta) {
@@ -99,8 +106,7 @@ public class WebClient {
         String token = "";
         int groupId = 0;
         String groupShortName = "";
-        List<Integer> groupIds = new ArrayList<Integer>();
-        List<String> groupNames = new ArrayList<String>();
+        List<String> groups = new ArrayList<String>();
 
         String error = "";
         JSONObject errors = null;
@@ -126,16 +132,10 @@ public class WebClient {
             groupId = jsonObject.optInt("GroupID");
             groupShortName = jsonObject.optString("GroupShortName");
 
-            arr = jsonObject.optJSONArray("GroupIDs");
+            arr = jsonObject.optJSONArray("Groups");
             if (arr != null) {
                 for (int i = 0; i < arr.length(); i++) {
-                    groupIds.add(arr.optInt(i));
-                }
-            }
-            arr = jsonObject.optJSONArray("GroupNames");
-            if (arr != null) {
-                for (int i = 0; i < arr.length(); i++) {
-                    groupNames.add(arr.optString(i));
+                    groups.add(arr.optString(i));
                 }
             }
 
@@ -195,7 +195,7 @@ public class WebClient {
         }
 
         if (responseLogin != null) {
-            responseLogin.onPostExecute(context, token, error);
+            responseLogin.onPostExecute(context, token, groups, error);
         }
         if (responseJoin != null) {
             responseJoin.onPostExecute(context, error, nicknameErros, fullNameErros, dateBornErros, passAskingErros, passAnswerErros, passwordErros);
@@ -204,7 +204,7 @@ public class WebClient {
             responseNewGroup.onPostExecute(context, groupId, groupShortName, error, shortNameErros, longNameErros);
         }
         if (responseFindGroup != null) {
-            responseFindGroup.onPostExecute(context, groupIds, groupNames, error);
+            responseFindGroup.onPostExecute(context, groups, error);
         }
     }
 

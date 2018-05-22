@@ -30,11 +30,14 @@ import br.com.phibonatii.phibonatii.model.Ranking;
 public class MainActivity extends AppCompatActivity {
 
     private String token;
+    private String[] groups;
 
     private ListView objectList;
     private List<Radar> radarList;
     private List<Ranking> rankingList;
     private List<Bona> bonaList;
+
+    private Intent intentGoTo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         token = getIntent().getStringExtra("token");
+        groups = getIntent().getStringArrayExtra("groups");
 
         objectList = (ListView) findViewById(R.id.listview);
 
@@ -109,9 +113,11 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-        tabLayout.addTab(tabLayout.newTab().setText("FAMILIA"));
-        tabLayout.addTab(tabLayout.newTab().setText("ESCOLA"));
-        tabLayout.addTab(tabLayout.newTab().setText("TRABALHO"));
+        if (groups != null) {
+            for (int i = 1; i < groups.length; i += 2) {
+                tabLayout.addTab(tabLayout.newTab().setText(groups[i]));
+            }
+        }
         tabLayout.addTab(tabLayout.newTab().setText("GLOBAL"));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -121,6 +127,19 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (intentGoTo != null) {
+            String groupShortName = intentGoTo.getStringExtra("groupshortname");
+            if (groupShortName != "") {
+                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+                tabLayout.addTab(tabLayout.newTab().setText(groupShortName));
+                intentGoTo.putExtra("groupshortname", "");
+            }
+        }
     }
 
     private void displayListRadar(List<Radar> objects) {
@@ -139,27 +158,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void newGroup() {
-        Intent intent = new Intent(this, NewGroupActivity.class);
-        intent.putExtra("token", token);
-        startActivity(intent);
+        intentGoTo = new Intent(this, NewGroupActivity.class);
+        intentGoTo.putExtra("token", token);
+        startActivity(intentGoTo);
     }
 
     public void findGroup() {
-        Intent intent = new Intent(this, FindGroupActivity.class);
-        intent.putExtra("token", token);
-        startActivity(intent);
+        intentGoTo = new Intent(this, FindGroupActivity.class);
+        intentGoTo.putExtra("token", token);
+        startActivity(intentGoTo);
     }
 
     public void leaveGroup() {
-        Intent intent = new Intent(this, FindGroupActivity.class);
-        intent.putExtra("token", token);
-        startActivity(intent);
+        intentGoTo = new Intent(this, FindGroupActivity.class);
+        intentGoTo.putExtra("token", token);
+        startActivity(intentGoTo);
     }
 
     public void changePassword() {
-        Intent intent = new Intent(this, ChangePasswordActivity.class);
-        intent.putExtra("token", token);
-        startActivity(intent);
+        intentGoTo = new Intent(this, ChangePasswordActivity.class);
+        intentGoTo.putExtra("token", token);
+        startActivity(intentGoTo);
     }
 
     @Override
