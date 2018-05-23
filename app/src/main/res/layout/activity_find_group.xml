@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/findgr_edit_searchtext"
+                    android:id="@+id/edit_searchtext"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_searchtext"
@@ -35,7 +35,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/findgr_button_findgroup"
+                android:id="@+id/button_find_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -43,13 +43,13 @@
                 android:text="@string/button_find_group" />
 
             <Spinner
-                android:id="@+id/findgr_spinner_groups"
+                android:id="@+id/spinner_groups"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:popupTheme="@style/AppTheme.PopupOverlay" />
 
             <Button
-                android:id="@+id/findgr_button_meet"
+                android:id="@+id/button_meet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

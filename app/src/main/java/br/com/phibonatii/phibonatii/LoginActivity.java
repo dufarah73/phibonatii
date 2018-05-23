@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.phibonatii.phibonatii.model.Group;
+
 public class LoginActivity extends AppCompatActivity {
 
     public EditText fieldNickName;
@@ -56,7 +58,7 @@ public class LoginActivity extends AppCompatActivity {
 }
 
 class ResponseLogin implements IResponseLogin {
-    public void onPostExecute(Context context, String token, List<String> groups, String serverError) {
+    public void onPostExecute(Context context, String token, List<Group> groups, String serverError) {
         LoginActivity app = (LoginActivity) context;
 
         if (serverError != "") {

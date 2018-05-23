@@ -11,8 +11,10 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
 
+import br.com.phibonatii.phibonatii.model.Group;
+
 interface IResponseLogin {
-    public void onPostExecute(Context context, String token, List<String> groups, String serverError);
+    public void onPostExecute(Context context, String token, List<Group> groups, String serverError);
 }
 
 interface IResponseJoin {
@@ -28,7 +30,11 @@ interface IResponseNewGroup {
 }
 
 interface IResponseFindGroup {
-    public void onPostExecute(Context context, List<String> groups, String serverError);
+    public void onPostExecute(Context context, List<Group> groups, String serverError);
+}
+
+interface IResponseMeetGroup {
+    public void onPostExecute(Context context, String serverError);
 }
 
 interface IResponseLeaveGroup {
@@ -43,6 +49,7 @@ public class WebClient {
     private IResponseChangePassword responseChangePassword;
     private IResponseNewGroup responseNewGroup;
     private IResponseFindGroup responseFindGroup;
+    private IResponseMeetGroup responseMeetGroup;
     private IResponseLeaveGroup responseLeaveGroup;
 
     public String jsonReturned;
@@ -126,6 +133,19 @@ public class WebClient {
         new WebClientTask(this, "findgroup", JSONObjectToString(jsonObject)).execute();
     }
 
+    public void meetGroup(String token, int groupId, String groupShortName, IResponseMeetGroup responseMeetGroup) {
+        this.responseMeetGroup = responseMeetGroup;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("groupId", groupId);
+            jsonObject.put("groupShortName", groupShortName);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "meetgroup", JSONObjectToString(jsonObject)).execute();
+    }
+
     public void leaveGroup(String token, int groupId, IResponseLeaveGroup responseLeaveGroup) {
         this.responseLeaveGroup = responseLeaveGroup;
         JSONObject jsonObject = new JSONObject();
@@ -147,7 +167,7 @@ public class WebClient {
         String token = "";
         int groupId = 0;
         String groupShortName = "";
-        List<String> groups = new ArrayList<String>();
+        List<Group> groups = new ArrayList<Group>();
 
         String error = "";
         JSONObject errors = null;
@@ -176,8 +196,8 @@ public class WebClient {
 
             arr = jsonObject.optJSONArray("Groups");
             if (arr != null) {
-                for (int i = 0; i < arr.length(); i++) {
-                    groups.add(arr.optString(i));
+                for (int i = 2; i < arr.length(); i += 3) {
+                    groups.add(new Group(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
                 }
             }
 
@@ -256,6 +276,9 @@ public class WebClient {
         }
         if (responseFindGroup != null) {
             responseFindGroup.onPostExecute(context, groups, error);
+        }
+        if (responseMeetGroup != null) {
+            responseMeetGroup.onPostExecute(context, error);
         }
         if (responseLeaveGroup != null) {
             responseLeaveGroup.onPostExecute(context, error);
