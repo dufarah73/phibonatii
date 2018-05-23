@@ -19,6 +19,10 @@ interface IResponseJoin {
     public void onPostExecute(Context context, String serverError, List<String> nicknameErros, List<String> fullNameErros, List<String> dateBornErros, List<String> passAskingErros, List<String> passAnswerErros, List<String> passwordErros);
 }
 
+interface IResponseChangePassword {
+    public void onPostExecute(Context context, String serverError, List<String> newPasswordErros);
+}
+
 interface IResponseNewGroup {
     public void onPostExecute(Context context, int groupId, String groupShortName, String serverError, List<String> shortNameErros, List<String> longNameErros);
 }
@@ -36,6 +40,7 @@ public class WebClient {
     public Context context;
     private IResponseLogin responseLogin;
     private IResponseJoin responseJoin;
+    private IResponseChangePassword responseChangePassword;
     private IResponseNewGroup responseNewGroup;
     private IResponseFindGroup responseFindGroup;
     private IResponseLeaveGroup responseLeaveGroup;
@@ -77,6 +82,24 @@ public class WebClient {
             e.printStackTrace();
         }
         new WebClientTask(this, "join", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void changePassword(String token, String nickName, String fullName, String dateBorn, String passAnswer, String newPassword, IResponseChangePassword responseChangePassword) {
+        this.responseChangePassword = responseChangePassword;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (token != "") {
+                jsonObject.put("token", token);
+            }
+            jsonObject.put("nickName", nickName);
+            jsonObject.put("fullName", fullName);
+            jsonObject.put("dateBorn", dateBorn);
+            jsonObject.put("passAnswer", passAnswer);
+            jsonObject.put("newPassword", newPassword);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "changepassword", JSONObjectToString(jsonObject)).execute();
     }
 
     public void newGroup(String token, String shortName, String longName, IResponseNewGroup responseNewGroup) {
@@ -135,6 +158,7 @@ public class WebClient {
         List<String> passAskingErros = new ArrayList<String> ();
         List<String> passAnswerErros = new ArrayList<String> ();
         List<String> passwordErros = new ArrayList<String> ();
+        List<String> newPasswordErros = new ArrayList<String> ();
         List<String> shortNameErros = new ArrayList<String>();
         List<String> longNameErros = new ArrayList<String>();
 
@@ -197,6 +221,12 @@ public class WebClient {
                         passwordErros.add(arr.optString(i));
                     }
                 }
+                arr = errors.optJSONArray("New Password");
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
+                        newPasswordErros.add(arr.optString(i));
+                    }
+                }
                 arr = errors.optJSONArray("Short Name");
                 if (arr != null) {
                     for (int i = 0; i < arr.length(); i++) {
@@ -217,6 +247,9 @@ public class WebClient {
         }
         if (responseJoin != null) {
             responseJoin.onPostExecute(context, error, nicknameErros, fullNameErros, dateBornErros, passAskingErros, passAnswerErros, passwordErros);
+        }
+        if (responseChangePassword != null) {
+            responseChangePassword.onPostExecute(context, error, newPasswordErros);
         }
         if (responseNewGroup != null) {
             responseNewGroup.onPostExecute(context, groupId, groupShortName, error, shortNameErros, longNameErros);

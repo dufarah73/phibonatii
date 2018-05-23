@@ -51,20 +51,20 @@ public class MainActivity extends AppCompatActivity {
         objectList = (ListView) findViewById(R.id.listview);
 
         radarList = new ArrayList<Radar>();
-        radarList.add(new Radar(Long.valueOf(25),"7 Bona - 290 Tii","Num raio de 5 metros"));
-        radarList.add(new Radar(Long.valueOf(26), "48 Bona - 7448 Tii", "Num raio de 8 metros"));
-        radarList.add(new Radar(Long.valueOf(27), "70 Bona - 8299 Tii", "Num raio de 13 metros"));
-        radarList.add(new Radar(Long.valueOf(28), "186 Bona - 18589 Tii", "Num raio de 21 metros"));
-        radarList.add(new Radar(Long.valueOf(28), "357 Bona - 85009 Tii", "Num raio de 34 metros"));
+        radarList.add(new Radar(Long.valueOf(25),"7 Bona - Tii$ 290","Num raio de 5 metros"));
+        radarList.add(new Radar(Long.valueOf(26), "48 Bona - Tii$ 7448", "Num raio de 8 metros"));
+        radarList.add(new Radar(Long.valueOf(27), "70 Bona - Tii$ 8299", "Num raio de 13 metros"));
+        radarList.add(new Radar(Long.valueOf(28), "186 Bona - Tii$ 18589", "Num raio de 21 metros"));
+        radarList.add(new Radar(Long.valueOf(28), "357 Bona - Tii$ 85009", "Num raio de 34 metros"));
         rankingList = new ArrayList<Ranking>();
-        rankingList.add(new Ranking(Long.valueOf(35),"MAICON - 8300 Tii","Maicon da Siva Viana"));
-        rankingList.add(new Ranking(Long.valueOf(36), "COX4893 - 743 Tii", "Eduardo Cox"));
-        rankingList.add(new Ranking(Long.valueOf(37), "JAIR - 55 Tii", "José Antonio Imair Ramos"));
+        rankingList.add(new Ranking(Long.valueOf(35),"MAICON - Tii$ 8300","Maicon da Siva Viana"));
+        rankingList.add(new Ranking(Long.valueOf(36), "COX4893 - Tii$ 743", "Eduardo Cox"));
+        rankingList.add(new Ranking(Long.valueOf(37), "JAIR - Tii$ 55", "José Antonio Imair Ramos"));
         bonaList = new ArrayList<Bona>();
-        bonaList.add(new Bona(Long.valueOf(15),"Presente - 370 Tii","Presente para maria"));
-        bonaList.add(new Bona(Long.valueOf(16), "Cigarro - 433 Tii", "Roxo"));
-        bonaList.add(new Bona(Long.valueOf(17), "Jujuba - 155 Tii", "Pacote de jujuba sortida"));
-        bonaList.add(new Bona(Long.valueOf(17), "Pacote - 42 Tii", "Embrulho de fogos"));
+        bonaList.add(new Bona(Long.valueOf(15),"Presente - Tii$ 370","Presente para maria"));
+        bonaList.add(new Bona(Long.valueOf(16), "Cigarro - Tii$ 433", "Roxo"));
+        bonaList.add(new Bona(Long.valueOf(17), "Jujuba - Tii$ 155", "Pacote de jujuba sortida"));
+        bonaList.add(new Bona(Long.valueOf(17), "Pacote - Tii$ 42", "Embrulho de fogos"));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         tab = tabLayout.newTab();
-        tab.setText("GLOBALX");
+        tab.setText("GLOBAL");
         tab.setTag("0");
         tabLayout.addTab(tab);
 

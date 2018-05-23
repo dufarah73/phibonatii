@@ -31,13 +31,14 @@ public class JoinActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
     }
+
     private void getFields() {
-        fieldNickname = (EditText) this.findViewById(R.id.join_edit_nickname);
-        fieldFullName = (EditText) this.findViewById(R.id.join_edit_fullname);
-        fieldDateBorn = (EditText) this.findViewById(R.id.join_edit_dateborn);
-        fieldPassAsking = (EditText) this.findViewById(R.id.join_edit_passasking);
-        fieldPassAnswer = (EditText) this.findViewById(R.id.join_edit_passanswer);
-        fieldPassword = (EditText) this.findViewById(R.id.join_edit_password);
+        fieldNickname = (EditText) this.findViewById(R.id.edit_nickname);
+        fieldFullName = (EditText) this.findViewById(R.id.edit_fullname);
+        fieldDateBorn = (EditText) this.findViewById(R.id.edit_dateborn);
+        fieldPassAsking = (EditText) this.findViewById(R.id.edit_passasking);
+        fieldPassAnswer = (EditText) this.findViewById(R.id.edit_passanswer);
+        fieldPassword = (EditText) this.findViewById(R.id.edit_password);
 
         fieldNickname.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldFullName.setBackgroundColor(Color.parseColor("#ffffff"));

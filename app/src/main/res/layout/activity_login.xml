@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/login_edit_nickname"
+                    android:id="@+id/edit_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_nickname"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/login_edit_password"
+                    android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_password"
@@ -53,7 +53,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/login_button_login"
+                android:id="@+id/button_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -64,11 +64,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
-                android:text="@string/text_information_change_password"
+                android:text="@string/text_change_password"
                 android:textStyle="italic" />
 
             <Button
-                android:id="@+id/login_button_change_password"
+                android:id="@+id/button_change_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="changePassword"
@@ -78,11 +78,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="16dp"
-                android:text="@string/text_information_join"
+                android:text="@string/text_join"
                 android:textStyle="italic" />
 
             <Button
-                android:id="@+id/login_button_join"
+                android:id="@+id/button_join"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:onClick="join"

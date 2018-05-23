@@ -24,9 +24,6 @@
         <activity android:name=".JoinActivity" />
         <activity android:name=".ChangePasswordActivity" />
         <activity
-            android:name=".DesktopActivity"
-            android:label="@string/activity_desktop" />
-        <activity
             android:name=".MainActivity"
             android:label="@string/activity_main"
             android:theme="@style/AppTheme.NoActionBar" />

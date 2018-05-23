@@ -20,20 +20,18 @@
     <string name="hint_fullname">Full Name</string>
     <string name="hint_dateborn">Date Born</string>
     <string name="hint_password">Password</string>
-    <string name="hint_new_password">New Password</string>
+    <string name="hint_newpassword">New Password</string>
     <string name="hint_passasking">Asking</string>
     <string name="hint_passanswer">Answer</string>
-    <string name="hint_personal_question">Personal Question - Used only when forget password</string>
     <string name="hint_shortname">Short Name (max 30 char)</string>
     <string name="hint_longname">Long Name (max 900 char)</string>
     <string name="hint_searchtext">Search Text</string>
 
     <string name="action_password">Enter Password</string>
 
-    <string name="text_information_change_password">If forgot password:</string>
-    <string name="text_information_join">If nickname is not registred:</string>
-    <string name="text_information_join2">Make sure the ALL 5 data entered above is typed correctly. They can NEVER MORE be changed again.</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="text_change_password">If forgot password:</string>
+    <string name="text_join">If nickname is not registred:</string>
+    <string name="text_fields_personalquestion">Personal Question - Used only when forget password</string>
+    <string name="text_fields_join">Make sure the ALL 5 data entered above is typed correctly. They can NEVER MORE be changed again.</string>
 
 </resources>

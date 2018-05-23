@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content">
 
                 <AutoCompleteTextView
-                    android:id="@+id/join_edit_nickname"
+                    android:id="@+id/edit_nickname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_nickname"
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/join_edit_fullname"
+                    android:id="@+id/edit_fullname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_fullname" />
@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/join_edit_dateborn"
+                    android:id="@+id/edit_dateborn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
@@ -72,10 +72,9 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/join_text_personal_question"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/hint_personal_question"
+                        android:text="@string/text_fields_personalquestion"
                         android:textStyle="italic" />
 
                 </android.support.design.widget.TextInputLayout>
@@ -91,7 +90,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/join_edit_passasking"
+                            android:id="@+id/edit_passasking"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_passasking" />
@@ -103,7 +102,7 @@
                         android:layout_height="wrap_content">
 
                         <EditText
-                            android:id="@+id/join_edit_passanswer"
+                            android:id="@+id/edit_passanswer"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="@string/hint_passanswer" />
@@ -120,7 +119,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_information_join2"
+                    android:text="@string/text_fields_join"
                     android:textStyle="italic" />
 
             </android.support.design.widget.TextInputLayout>
@@ -130,7 +129,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/join_edit_password"
+                    android:id="@+id/edit_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_password" />
@@ -138,7 +137,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/join_button_join"
+                android:id="@+id/button_join"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"

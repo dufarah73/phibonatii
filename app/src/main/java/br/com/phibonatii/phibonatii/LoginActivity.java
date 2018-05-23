@@ -23,9 +23,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
     }
+
     private void getFields() {
-        fieldNickName = (EditText) this.findViewById(R.id.login_edit_nickname);
-        fieldPassword = (EditText) this.findViewById(R.id.login_edit_password);
+        fieldNickName = (EditText) this.findViewById(R.id.edit_nickname);
+        fieldPassword = (EditText) this.findViewById(R.id.edit_password);
     }
     private void getValues() {
         getFields();
@@ -47,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ChangePasswordActivity.class);
         startActivity(intent);
     }
+
     public void join(View view) {
         Intent intent = new Intent(this, JoinActivity.class);
         startActivity(intent);
