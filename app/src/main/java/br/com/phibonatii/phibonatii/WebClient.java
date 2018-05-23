@@ -27,6 +27,10 @@ interface IResponseFindGroup {
     public void onPostExecute(Context context, List<String> groups, String serverError);
 }
 
+interface IResponseLeaveGroup {
+    public void onPostExecute(Context context, String serverError);
+}
+
 public class WebClient {
 
     public Context context;
@@ -34,6 +38,8 @@ public class WebClient {
     private IResponseJoin responseJoin;
     private IResponseNewGroup responseNewGroup;
     private IResponseFindGroup responseFindGroup;
+    private IResponseLeaveGroup responseLeaveGroup;
+
     public String jsonReturned;
 
     public WebClient(Context context) {
@@ -42,7 +48,7 @@ public class WebClient {
 
     private String JSONObjectToString(JSONObject jsonObject) {
         return jsonObject.toString().replace("\"","%22").replace("+","%2B").replace("=","%3D").replace(":","%3A").replace(",","%2C").replace(" ","%20");
-//        jsonObject.toString().replace("'","*").replace("\"","'");
+//        return jsonObject.toString().replace("'","*").replace("\"","'");
     }
 
     public void login(String nickName, String password, IResponseLogin responseLogin) {
@@ -95,6 +101,18 @@ public class WebClient {
             e.printStackTrace();
         }
         new WebClientTask(this, "findgroup", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void leaveGroup(String token, int groupId, IResponseLeaveGroup responseLeaveGroup) {
+        this.responseLeaveGroup = responseLeaveGroup;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("groupId", groupId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "leavegroup", JSONObjectToString(jsonObject)).execute();
     }
 
     public void onPostExecute(String resposta) {
@@ -205,6 +223,9 @@ public class WebClient {
         }
         if (responseFindGroup != null) {
             responseFindGroup.onPostExecute(context, groups, error);
+        }
+        if (responseLeaveGroup != null) {
+            responseLeaveGroup.onPostExecute(context, error);
         }
     }
 

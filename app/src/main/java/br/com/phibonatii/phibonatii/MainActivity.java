@@ -1,5 +1,6 @@
 package br.com.phibonatii.phibonatii;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -102,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 Spinner sp = (Spinner) findViewById(R.id.spinner);
                 int mySpinnerPosition = sp.getSelectedItemPosition();
                 int myTabPosition = tab.getPosition();
-                Toast.makeText(sp.getContext(), "tab -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
+                Toast.makeText(sp.getContext(), "tab("+tab.getTag()+") -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -113,12 +114,19 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+        TabLayout.Tab tab;
         if (groups != null) {
             for (int i = 1; i < groups.length; i += 2) {
-                tabLayout.addTab(tabLayout.newTab().setText(groups[i]));
+                tab = tabLayout.newTab();
+                tab.setText(groups[i]);
+                tab.setTag(groups[i-1]);
+                tabLayout.addTab(tab);
             }
         }
-        tabLayout.addTab(tabLayout.newTab().setText("GLOBAL"));
+        tab = tabLayout.newTab();
+        tab.setText("GLOBALX");
+        tab.setTag("0");
+        tabLayout.addTab(tab);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -132,14 +140,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (intentGoTo != null) {
-            String groupShortName = intentGoTo.getStringExtra("groupshortname");
-            if (groupShortName != "") {
-                TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-                tabLayout.addTab(tabLayout.newTab().setText(groupShortName));
-                intentGoTo.putExtra("groupshortname", "");
-            }
-        }
     }
 
     private void displayListRadar(List<Radar> objects) {
@@ -160,25 +160,41 @@ public class MainActivity extends AppCompatActivity {
     public void newGroup() {
         intentGoTo = new Intent(this, NewGroupActivity.class);
         intentGoTo.putExtra("token", token);
-        startActivity(intentGoTo);
+        startActivityForResult(intentGoTo, 1 /*New Group*/);
     }
 
     public void findGroup() {
         intentGoTo = new Intent(this, FindGroupActivity.class);
         intentGoTo.putExtra("token", token);
-        startActivity(intentGoTo);
+        startActivityForResult(intentGoTo, 2 /*Find Group*/);
     }
 
     public void leaveGroup() {
-        intentGoTo = new Intent(this, FindGroupActivity.class);
-        intentGoTo.putExtra("token", token);
-        startActivity(intentGoTo);
+        TabLayout tb = (TabLayout) findViewById(R.id.tabs);
+        TabLayout.Tab tab = tb.getTabAt(tb.getSelectedTabPosition());
+
+        WebClient webClient = new WebClient(this);
+        webClient.leaveGroup(token, Integer.parseInt((String) tab.getTag()), new ResponseLeaveGroup());
     }
 
     public void changePassword() {
         intentGoTo = new Intent(this, ChangePasswordActivity.class);
         intentGoTo.putExtra("token", token);
         startActivity(intentGoTo);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String groupId = data.getStringExtra("groupid");
+        String groupShortName = data.getStringExtra("groupshortname");
+        if (groupShortName != "") {
+            TabLayout tb = (TabLayout) findViewById(R.id.tabs);
+            TabLayout.Tab tab;
+            tab = tb.newTab();
+            tab.setText(groupShortName);
+            tab.setTag(groupId);
+            tb.addTab(tab);
+        }
     }
 
     @Override
@@ -212,5 +228,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return super.onOptionsItemSelected(item);
+    }
+}
+
+class ResponseLeaveGroup implements IResponseLeaveGroup {
+    public void onPostExecute(Context context, String serverError) {
+        MainActivity app = (MainActivity) context;
+
+        if (serverError != "") {
+            Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
+        } else {
+            TabLayout tb = (TabLayout) app.findViewById(R.id.tabs);
+            String s = tb.getTabAt(tb.getSelectedTabPosition()).getText().toString();
+            tb.removeTabAt(tb.getSelectedTabPosition());
+            Toast.makeText(context, "Grupo "+s+" Removido", Toast.LENGTH_LONG).show();
+        }
     }
 }

@@ -50,6 +50,7 @@ public class WebClientTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPreExecute() {
+//        Toast.makeText(webClient.context, jsonSent, Toast.LENGTH_LONG).show();
         dialog = ProgressDialog.show(webClient.context, "Aguarde", "Acessando servidor", true, true);
     }
 
@@ -60,6 +61,7 @@ public class WebClientTask extends AsyncTask<Void, Void, String> {
 
     @Override
     protected void onPostExecute(String resposta) {
+//        Toast.makeText(webClient.context, resposta, Toast.LENGTH_LONG).show();
         dialog.dismiss();
         webClient.onPostExecute(resposta);
     }

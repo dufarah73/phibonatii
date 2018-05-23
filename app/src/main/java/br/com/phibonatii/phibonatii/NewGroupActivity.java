@@ -1,6 +1,8 @@
 package br.com.phibonatii.phibonatii;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -82,8 +84,9 @@ class ResponseNewGroup implements IResponseNewGroup {
         if (msgErros != "") {
             Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
         } else {
-            app.getIntent().putExtra("groupid", groupId);
+            app.getIntent().putExtra("groupid", String.valueOf(groupId));
             app.getIntent().putExtra("groupshortname", groupShortName);
+            app.setResult(Activity.RESULT_OK, app.getIntent());
             app.finish();
         }
     }
