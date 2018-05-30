@@ -26,7 +26,7 @@ interface IResponseChangePassword {
 }
 
 interface IResponseNewGroup {
-    public void onPostExecute(Context context, int groupId, String groupShortName, String serverError, List<String> shortNameErros, List<String> longNameErros);
+    public void onPostExecute(Context context, List<Group> groups, String serverError, List<String> shortNameErros, List<String> longNameErros);
 }
 
 interface IResponseFindGroup {
@@ -165,8 +165,6 @@ public class WebClient {
         JSONArray arr;
 
         String token = "";
-        int groupId = 0;
-        String groupShortName = "";
         List<Group> groups = new ArrayList<Group>();
 
         String error = "";
@@ -190,9 +188,6 @@ public class WebClient {
 
         if (jsonObject != null) {
             token = jsonObject.optString("Token");
-
-            groupId = jsonObject.optInt("GroupID");
-            groupShortName = jsonObject.optString("GroupShortName");
 
             arr = jsonObject.optJSONArray("Groups");
             if (arr != null) {
@@ -272,7 +267,7 @@ public class WebClient {
             responseChangePassword.onPostExecute(context, error, newPasswordErros);
         }
         if (responseNewGroup != null) {
-            responseNewGroup.onPostExecute(context, groupId, groupShortName, error, shortNameErros, longNameErros);
+            responseNewGroup.onPostExecute(context, groups, error, shortNameErros, longNameErros);
         }
         if (responseFindGroup != null) {
             responseFindGroup.onPostExecute(context, groups, error);

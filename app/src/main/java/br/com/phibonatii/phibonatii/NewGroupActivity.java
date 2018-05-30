@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import br.com.phibonatii.phibonatii.model.Group;
+
 public class NewGroupActivity extends AppCompatActivity {
 
     private String token;
@@ -55,7 +57,7 @@ public class NewGroupActivity extends AppCompatActivity {
 }
 
 class ResponseNewGroup implements IResponseNewGroup {
-    public void onPostExecute(Context context, int groupId, String groupShortName, String serverError, List<String> shortNameErros, List<String> longNameErros) {
+    public void onPostExecute(Context context, List<Group> groups, String serverError, List<String> shortNameErros, List<String> longNameErros) {
         String msgErros = "";
         NewGroupActivity app = (NewGroupActivity) context;
 
@@ -84,8 +86,7 @@ class ResponseNewGroup implements IResponseNewGroup {
         if (msgErros != "") {
             Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
         } else {
-            app.getIntent().putExtra("groupid", String.valueOf(groupId));
-            app.getIntent().putExtra("groupshortname", groupShortName);
+//            app.getIntent().putExtra("groupshortname", groups.get(0).getShortName());
             app.setResult(Activity.RESULT_OK, app.getIntent());
             app.finish();
         }

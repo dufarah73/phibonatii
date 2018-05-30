@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 
 import br.com.phibonatii.phibonatii.model.Group;
@@ -64,9 +67,22 @@ class ResponseLogin implements IResponseLogin {
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream ();
+            ObjectOutputStream oos = null;
+            try {
+                oos = new ObjectOutputStream(baos);
+                oos.writeObject (groups.get(0));
+                oos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            byte[] b = baos.toByteArray();
+            String g = new String(b);
+
             Intent intent = new Intent(app, MainActivity.class);
             intent.putExtra("token",token);
-            intent.putExtra("groups", groups.toArray(new String[groups.size()]));
+            intent.putExtra("groups",g);
             app.startActivity(intent);
         }
     }

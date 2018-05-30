@@ -18,6 +18,9 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,6 +28,7 @@ import br.com.phibonatii.phibonatii.adapter.BonaAdapter;
 import br.com.phibonatii.phibonatii.adapter.RadarAdapter;
 import br.com.phibonatii.phibonatii.adapter.RankingAdapter;
 import br.com.phibonatii.phibonatii.model.Bona;
+import br.com.phibonatii.phibonatii.model.Group;
 import br.com.phibonatii.phibonatii.model.Radar;
 import br.com.phibonatii.phibonatii.model.Ranking;
 
@@ -47,6 +51,18 @@ public class MainActivity extends AppCompatActivity {
 
         token = getIntent().getStringExtra("token");
         groups = getIntent().getStringArrayExtra("groups");
+
+        byte[] bytes = groups[0].getBytes();
+        ByteArrayInputStream bais = new ByteArrayInputStream (bytes);
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(bais);
+            Group grp = (Group) ois.readObject ();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
 
         objectList = (ListView) findViewById(R.id.listview);
 
