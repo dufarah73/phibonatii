@@ -10,7 +10,7 @@
     <string name="button_change_password">Change Password</string>
     <string name="button_join">Join</string>
     <string name="button_retrieve_passasking">Retrieve Pass Asking</string>
-    <string name="button_new_group">Create and Meet the New Group</string>
+    <string name="button_new_group">Create New Group</string>
     <string name="button_find_group">Find Group</string>
     <string name="button_meet">Meet Group</string>
     <string name="button_leave_group">Leave Group</string>

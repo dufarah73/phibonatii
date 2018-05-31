@@ -146,7 +146,7 @@ public class WebClient {
         new WebClientTask(this, "meetgroup", JSONObjectToString(jsonObject)).execute();
     }
 
-    public void leaveGroup(String token, int groupId, IResponseLeaveGroup responseLeaveGroup) {
+    public void leaveGroup(String token, Long groupId, IResponseLeaveGroup responseLeaveGroup) {
         this.responseLeaveGroup = responseLeaveGroup;
         JSONObject jsonObject = new JSONObject();
         try {

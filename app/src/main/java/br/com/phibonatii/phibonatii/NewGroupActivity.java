@@ -86,7 +86,8 @@ class ResponseNewGroup implements IResponseNewGroup {
         if (msgErros != "") {
             Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
         } else {
-//            app.getIntent().putExtra("groupshortname", groups.get(0).getShortName());
+            app.getIntent().putExtra("groupid", groups.get(0).getId());
+            app.getIntent().putExtra("groupshortname", groups.get(0).getShortName());
             app.setResult(Activity.RESULT_OK, app.getIntent());
             app.finish();
         }

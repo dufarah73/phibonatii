@@ -1,5 +1,6 @@
 package br.com.phibonatii.phibonatii;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -18,9 +19,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -35,7 +33,7 @@ import br.com.phibonatii.phibonatii.model.Ranking;
 public class MainActivity extends AppCompatActivity {
 
     private String token;
-    private String[] groups;
+    private List<Group> groups;
 
     private ListView objectList;
     private List<Radar> radarList;
@@ -50,19 +48,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         token = getIntent().getStringExtra("token");
-        groups = getIntent().getStringArrayExtra("groups");
-
-        byte[] bytes = groups[0].getBytes();
-        ByteArrayInputStream bais = new ByteArrayInputStream (bytes);
-        ObjectInputStream ois = null;
-        try {
-            ois = new ObjectInputStream(bais);
-            Group grp = (Group) ois.readObject ();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        groups = (List<Group>) getIntent().getSerializableExtra("groups");
 
         objectList = (ListView) findViewById(R.id.listview);
 
@@ -131,17 +117,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         TabLayout.Tab tab;
-        if (groups != null) {
-            for (int i = 1; i < groups.length; i += 2) {
-                tab = tabLayout.newTab();
-                tab.setText(groups[i]);
-                tab.setTag(groups[i-1]);
-                tabLayout.addTab(tab);
-            }
+        for (int i = 0 ; i < groups.size() ; i++) {
+            tab = tabLayout.newTab();
+            tab.setText(groups.get(i).getShortName());
+            tab.setTag(groups.get(i).getId());
+            tabLayout.addTab(tab);
         }
         tab = tabLayout.newTab();
         tab.setText("GLOBAL");
-        tab.setTag("0");
+        tab.setTag(Long.valueOf(0));
         tabLayout.addTab(tab);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -190,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout.Tab tab = tb.getTabAt(tb.getSelectedTabPosition());
 
         WebClient webClient = new WebClient(this);
-        webClient.leaveGroup(token, Integer.parseInt((String) tab.getTag()), new ResponseLeaveGroup());
+        webClient.leaveGroup(token, (Long) tab.getTag(), new ResponseLeaveGroup());
     }
 
     public void changePassword() {
@@ -201,15 +185,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String groupId = data.getStringExtra("groupid");
-        String groupShortName = data.getStringExtra("groupshortname");
-        if (groupShortName != "") {
-            TabLayout tb = (TabLayout) findViewById(R.id.tabs);
-            TabLayout.Tab tab;
-            tab = tb.newTab();
-            tab.setText(groupShortName);
-            tab.setTag(groupId);
-            tb.addTab(tab);
+        if (resultCode == Activity.RESULT_OK) {
+            Long groupId = data.getLongExtra("groupid", 0);
+            String groupShortName = data.getStringExtra("groupshortname");
+            if (groupShortName != "") {
+                TabLayout tb = (TabLayout) findViewById(R.id.tabs);
+                TabLayout.Tab tab;
+                tab = tb.newTab();
+                tab.setText(groupShortName);
+                tab.setTag(groupId);
+                tb.addTab(tab);
+            }
         }
     }
 
