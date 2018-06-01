@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private List<Ranking> rankingList;
     private List<Bona> bonaList;
 
-    private Intent intentGoTo;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"RADAR","RANKING","BONA"}));
+        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"AROUND","RANKING","BONA"}));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -127,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         tab.setText("GLOBAL");
         tab.setTag(Long.valueOf(0));
         tabLayout.addTab(tab);
-
+/*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,6 +133,7 @@ public class MainActivity extends AppCompatActivity {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
             }
         });
+*/
     }
 
     @Override
@@ -143,30 +142,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void displayListRadar(List<Radar> objects) {
-        RadarAdapter adapter = new RadarAdapter(this, objects);
-        objectList.setAdapter(adapter);
+        objectList.setAdapter(new RadarAdapter(this, objects));
     }
 
     private void displayListRanking(List<Ranking> objects) {
-        RankingAdapter adapter = new RankingAdapter(this, objects);
-        objectList.setAdapter(adapter);
+        objectList.setAdapter(new RankingAdapter(this, objects));
     }
 
     private void displayListBona(List<Bona> objects) {
-        BonaAdapter adapter = new BonaAdapter(this, objects);
-        objectList.setAdapter(adapter);
+        objectList.setAdapter(new BonaAdapter(this, objects));
     }
 
     public void newGroup() {
-        intentGoTo = new Intent(this, NewGroupActivity.class);
-        intentGoTo.putExtra("token", token);
-        startActivityForResult(intentGoTo, 1 /*New Group*/);
+        Intent intent = new Intent(this, NewGroupActivity.class);
+        intent.putExtra("token", token);
+        startActivityForResult(intent, 1 /*New Group*/);
     }
 
     public void findGroup() {
-        intentGoTo = new Intent(this, FindGroupActivity.class);
-        intentGoTo.putExtra("token", token);
-        startActivityForResult(intentGoTo, 2 /*Find Group*/);
+        Intent intent = new Intent(this, FindGroupActivity.class);
+        intent.putExtra("token", token);
+        startActivityForResult(intent, 2 /*Find Group*/);
     }
 
     public void leaveGroup() {
@@ -178,9 +174,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changePassword() {
-        intentGoTo = new Intent(this, ChangePasswordActivity.class);
-        intentGoTo.putExtra("token", token);
-        startActivity(intentGoTo);
+        Intent intent = new Intent(this, ChangePasswordActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
+    public void hideBona(View view) {
+        Intent intent = new Intent(this, HideBonaActivity.class);
+        intent.putExtra("token", token);
+        startActivity(intent);
     }
 
     @Override

@@ -44,13 +44,15 @@ public class GroupAdapter extends BaseAdapter {
 
         View view = convertView;
         if (view == null) {
-            view = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
+            view = inflater.inflate(R.layout.list_group_item, parent, false);
         }
 
-        TextView campoNome = (TextView) view.findViewById(android.R.id.text1);
+        TextView campoNome = (TextView) view.findViewById(R.id.group_shortname);
         campoNome.setText(obj.getShortName());
+        campoNome.setTag(obj.getId());
 
-        view.setTag(obj.getId());
+        TextView campoDescricao = (TextView) view.findViewById(R.id.group_longname);
+        campoDescricao.setText(obj.getLongName());
 
         return view;
     }

@@ -50,8 +50,8 @@ public class RadarAdapter extends BaseAdapter {
         TextView campoNome = (TextView) view.findViewById(R.id.radar_name);
         campoNome.setText(obj.getName());
 
-        TextView campoTelefone = (TextView) view.findViewById(R.id.radar_description);
-        campoTelefone.setText(obj.getDescription());
+        TextView campoDescricao = (TextView) view.findViewById(R.id.radar_description);
+        campoDescricao.setText(obj.getDescription());
 
         return view;
     }

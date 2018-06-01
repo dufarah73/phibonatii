@@ -3,8 +3,10 @@
     <string name="activity_login_name">Login</string>
     <string name="activity_change_password_name">Change Password</string>
     <string name="activity_join_name">Join</string>
-    <string name="activity_desktop">*</string>
-    <string name="activity_main">Dashboard</string>
+    <string name="activity_main_name">Dashboard</string>
+    <string name="activity_new_group_name">New Group</string>
+    <string name="activity_find_group_name">Find Group</string>
+    <string name="activity_hide_bona_name">Hide Bona</string>
 
     <string name="button_login">Login</string>
     <string name="button_change_password">Change Password</string>
@@ -26,6 +28,7 @@
     <string name="hint_shortname">Short Name (max 30 char)</string>
     <string name="hint_longname">Long Name (max 900 char)</string>
     <string name="hint_searchtext">Search Text</string>
+    <string name="hint_description">Description</string>
 
     <string name="action_password">Enter Password</string>
 
@@ -33,5 +36,6 @@
     <string name="text_join">If nickname is not registred:</string>
     <string name="text_fields_personalquestion">Personal Question - Used only when forget password</string>
     <string name="text_fields_join">Make sure the ALL 5 data entered above is typed correctly. They can NEVER MORE be changed again.</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

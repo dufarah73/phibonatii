@@ -52,7 +52,7 @@ public class FindGroupActivity extends AppCompatActivity {
 
     public void meetGroup(View view) {
         Spinner sp = (Spinner) this.findViewById(R.id.spinner_groups);
-        TextView tx = (TextView) sp.getSelectedView();
+        TextView tx = (TextView) sp.getSelectedView().findViewById(R.id.group_shortname);
 
         WebClient webClient = new WebClient(this);
         webClient.meetGroup(token, (Long) tx.getTag(), tx.getText().toString(), new ResponseMeetGroup());
@@ -80,7 +80,7 @@ class ResponseMeetGroup implements IResponseMeetGroup {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
             Spinner sp = (Spinner) app.findViewById(R.id.spinner_groups);
-            TextView tx = (TextView) sp.getSelectedView();
+            TextView tx = (TextView) sp.getSelectedView().findViewById(R.id.group_shortname);
 
             app.getIntent().putExtra("groupid", (Long) tx.getTag());
             app.getIntent().putExtra("groupshortname", tx.getText().toString());

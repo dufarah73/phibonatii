@@ -50,8 +50,8 @@ public class RankingAdapter extends BaseAdapter {
         TextView campoNome = (TextView) view.findViewById(R.id.ranking_name);
         campoNome.setText(obj.getName());
 
-        TextView campoTelefone = (TextView) view.findViewById(R.id.ranking_description);
-        campoTelefone.setText(obj.getDescription());
+        TextView campoDescricao = (TextView) view.findViewById(R.id.ranking_description);
+        campoDescricao.setText(obj.getDescription());
 
         return view;
     }
