@@ -133,7 +133,7 @@ public class WebClient {
         new WebClientTask(this, "findgroup", JSONObjectToString(jsonObject)).execute();
     }
 
-    public void meetGroup(String token, int groupId, String groupShortName, IResponseMeetGroup responseMeetGroup) {
+    public void meetGroup(String token, Long groupId, String groupShortName, IResponseMeetGroup responseMeetGroup) {
         this.responseMeetGroup = responseMeetGroup;
         JSONObject jsonObject = new JSONObject();
         try {

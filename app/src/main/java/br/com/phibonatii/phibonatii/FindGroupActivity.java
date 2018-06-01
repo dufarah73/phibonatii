@@ -1,5 +1,6 @@
 package br.com.phibonatii.phibonatii;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
@@ -51,10 +52,10 @@ public class FindGroupActivity extends AppCompatActivity {
 
     public void meetGroup(View view) {
         Spinner sp = (Spinner) this.findViewById(R.id.spinner_groups);
-        TextView tex = (TextView) sp.getSelectedItem();
+        TextView tx = (TextView) sp.getSelectedView();
 
         WebClient webClient = new WebClient(this);
-        webClient.meetGroup(token, Integer.parseInt((String) tex.getTag()), tex.getText().toString(), new ResponseMeetGroup());
+        webClient.meetGroup(token, (Long) tx.getTag(), tx.getText().toString(), new ResponseMeetGroup());
     }
 }
 
@@ -78,6 +79,12 @@ class ResponseMeetGroup implements IResponseMeetGroup {
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
+            Spinner sp = (Spinner) app.findViewById(R.id.spinner_groups);
+            TextView tx = (TextView) sp.getSelectedView();
+
+            app.getIntent().putExtra("groupid", (Long) tx.getTag());
+            app.getIntent().putExtra("groupshortname", tx.getText().toString());
+            app.setResult(Activity.RESULT_OK, app.getIntent());
             app.finish();
         }
     }

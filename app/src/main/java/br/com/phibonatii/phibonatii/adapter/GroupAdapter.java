@@ -44,7 +44,7 @@ public class GroupAdapter extends BaseAdapter {
 
         View view = convertView;
         if (view == null) {
-            view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            view = inflater.inflate(android.R.layout.simple_spinner_dropdown_item, parent, false);
         }
 
         TextView campoNome = (TextView) view.findViewById(android.R.id.text1);
