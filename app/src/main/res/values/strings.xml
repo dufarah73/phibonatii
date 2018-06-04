@@ -36,6 +36,4 @@
     <string name="text_join">If nickname is not registred:</string>
     <string name="text_fields_personalquestion">Personal Question - Used only when forget password</string>
     <string name="text_fields_join">Make sure the ALL 5 data entered above is typed correctly. They can NEVER MORE be changed again.</string>
-    <string name="title_activity_maps">Map</string>
-
 </resources>

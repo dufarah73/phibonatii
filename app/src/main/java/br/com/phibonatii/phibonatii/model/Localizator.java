@@ -1,10 +1,13 @@
 package br.com.phibonatii.phibonatii.model;
 
+import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -18,9 +21,11 @@ import com.google.android.gms.maps.model.LatLng;
 public class Localizator implements GoogleApiClient.ConnectionCallbacks, LocationListener {
 
     private final GoogleApiClient client;
-    private final GoogleMap mapa;
+    private final GoogleMap googleMap;
+    private final Context context;
+    private final Activity activity;
 
-    public Localizator(Context context, GoogleMap mapa) {
+    public Localizator(Activity activity, Context context, GoogleMap googleMap) {
         client = new GoogleApiClient.Builder(context)
                 .addApi(LocationServices.API)
                 .addConnectionCallbacks(this)
@@ -28,17 +33,24 @@ public class Localizator implements GoogleApiClient.ConnectionCallbacks, Locatio
 
         client.connect();
 
-        this.mapa = mapa;
+        this.activity = activity;
+        this.context = context;
+        this.googleMap = googleMap;
     }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        LocationRequest request = new LocationRequest();
+        LocationRequest request = LocationRequest.create();
         request.setSmallestDisplacement(50);
         request.setInterval(1000);
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        LocationServices.FusedLocationApi.requestLocationUpdates(client, request, this);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        } else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(client, request, this);
+        }
+
     }
 
     @Override
@@ -50,6 +62,6 @@ public class Localizator implements GoogleApiClient.ConnectionCallbacks, Locatio
     public void onLocationChanged(Location location) {
         LatLng coordenada = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(coordenada);
-        mapa.moveCamera(cameraUpdate);
+        googleMap.moveCamera(cameraUpdate);
     }
 }
