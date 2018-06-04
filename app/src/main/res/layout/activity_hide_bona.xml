@@ -57,18 +57,11 @@
 
             </RelativeLayout>
 
-
-            <android.support.design.widget.TextInputLayout
+            <TextView
+                android:id="@+id/text_locate"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/edit_fullname"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_fullname" />
-
-            </android.support.design.widget.TextInputLayout>
+                android:layout_height="wrap_content"
+                android:textStyle="italic" />
 
             <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/frame_localization"
