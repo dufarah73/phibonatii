@@ -2,6 +2,7 @@ package br.com.phibonatii.phibonatii;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -34,24 +35,32 @@ public class ChangePasswordActivity extends AppCompatActivity {
         token = getIntent().getStringExtra("token");
     }
 
-    private void getFields() {
+    private void getPartialFields() {
         fieldNickname = (EditText) this.findViewById(R.id.edit_nickname);
         fieldFullName = (EditText) this.findViewById(R.id.edit_fullname);
         fieldDateBorn = (EditText) this.findViewById(R.id.edit_dateborn);
+    }
+    private void getPartialValues() {
+        getPartialFields();
+        nickName = fieldNickname.getText().toString();
+        fullName = fieldFullName.getText().toString();
+        dateBorn = fieldDateBorn.getText().toString();
+    }
+    private boolean toValidatePartial() {
+        getPartialValues();
+        return true;
+    }
+
+    private void getFields() {
+        getPartialFields();
         fieldPassAnswer = (EditText) this.findViewById(R.id.edit_passanswer);
         fieldNewPassword = (EditText) this.findViewById(R.id.edit_newpassword);
 
-        fieldNickname.setBackgroundColor(Color.parseColor("#ffffff"));
-        fieldFullName.setBackgroundColor(Color.parseColor("#ffffff"));
-        fieldDateBorn.setBackgroundColor(Color.parseColor("#ffffff"));
-        fieldPassAnswer.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldNewPassword.setBackgroundColor(Color.parseColor("#ffffff"));
     }
     private void getValues() {
         getFields();
-        nickName = fieldNickname.getText().toString();
-        fullName = fieldFullName.getText().toString();
-        dateBorn = fieldDateBorn.getText().toString();
+        getPartialValues();
         passAnswer = fieldPassAnswer.getText().toString();
         newPassword = fieldNewPassword.getText().toString();
     }
@@ -59,10 +68,18 @@ public class ChangePasswordActivity extends AppCompatActivity {
         getValues();
         return true;
     }
+
     public void changePassword(View view) {
         if (toValidate()) {
             WebClient webClient = new WebClient(this);
             webClient.changePassword(token, nickName, fullName, dateBorn, passAnswer, newPassword, new ResponseChangePassword());
+        }
+    }
+
+    public void retrievePassAsking(View view) {
+        if (toValidatePartial()) {
+            WebClient webClient = new WebClient(this);
+            webClient.retrivePassAsking(token, nickName, fullName, dateBorn, new ResponseRetrievePassAsking());
         }
     }
 }
@@ -91,6 +108,24 @@ class ResponseChangePassword implements IResponseChangePassword {
             Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
         } else {
             app.finish();
+        }
+    }
+}
+
+class ResponseRetrievePassAsking implements IResponseRetrievePassAsking {
+    public void onPostExecute(Context context, String passAsking, String serverError) {
+        String msgErros = "";
+        ChangePasswordActivity app = (ChangePasswordActivity) context;
+
+        if (serverError != "") {
+            msgErros = "Erro no servidor:" + "\t" + serverError + "\t";
+        }
+
+        if (msgErros != "") {
+            Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
+        } else {
+            TextInputLayout fieldPassAnswer = (TextInputLayout) app.findViewById(R.id.textinputlayout_passanswer);
+            fieldPassAnswer.setHint(passAsking);
         }
     }
 }

@@ -25,6 +25,10 @@ interface IResponseChangePassword {
     public void onPostExecute(Context context, String serverError, List<String> newPasswordErros);
 }
 
+interface IResponseRetrievePassAsking {
+    public void onPostExecute(Context context, String passAsking, String serverError);
+}
+
 interface IResponseNewGroup {
     public void onPostExecute(Context context, List<Group> groups, String serverError, List<String> shortNameErros, List<String> longNameErros);
 }
@@ -47,6 +51,7 @@ public class WebClient {
     private IResponseLogin responseLogin;
     private IResponseJoin responseJoin;
     private IResponseChangePassword responseChangePassword;
+    private IResponseRetrievePassAsking responseRetrievePassAsking;
     private IResponseNewGroup responseNewGroup;
     private IResponseFindGroup responseFindGroup;
     private IResponseMeetGroup responseMeetGroup;
@@ -109,6 +114,22 @@ public class WebClient {
         new WebClientTask(this, "changepassword", JSONObjectToString(jsonObject)).execute();
     }
 
+    public void retrivePassAsking(String token, String nickName, String fullName, String dateBorn, IResponseRetrievePassAsking responseRetrievePassAsking) {
+        this.responseRetrievePassAsking = responseRetrievePassAsking;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (token != "") {
+                jsonObject.put("token", token);
+            }
+            jsonObject.put("nickName", nickName);
+            jsonObject.put("fullName", fullName);
+            jsonObject.put("dateBorn", dateBorn);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "retrievepassasking", JSONObjectToString(jsonObject)).execute();
+    }
+
     public void newGroup(String token, String shortName, String longName, IResponseNewGroup responseNewGroup) {
         this.responseNewGroup = responseNewGroup;
         JSONObject jsonObject = new JSONObject();
@@ -166,6 +187,7 @@ public class WebClient {
 
         String token = "";
         List<Group> groups = new ArrayList<Group>();
+        String passAsking = "";
 
         String error = "";
         JSONObject errors = null;
@@ -195,6 +217,8 @@ public class WebClient {
                     groups.add(new Group(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
                 }
             }
+
+            passAsking = jsonObject.optString("PassAsking");
 
             error = jsonObject.optString("Error");
             errors = jsonObject.optJSONObject("Errors");
@@ -265,6 +289,9 @@ public class WebClient {
         }
         if (responseChangePassword != null) {
             responseChangePassword.onPostExecute(context, error, newPasswordErros);
+        }
+        if (responseRetrievePassAsking != null) {
+            responseRetrievePassAsking.onPostExecute(context, passAsking, error);
         }
         if (responseNewGroup != null) {
             responseNewGroup.onPostExecute(context, groups, error, shortNameErros, longNameErros);
