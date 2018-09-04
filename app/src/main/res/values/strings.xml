@@ -17,6 +17,7 @@
     <string name="button_meet">Meet Group</string>
     <string name="button_leave_group">Leave Group</string>
     <string name="button_logout">Logout</string>
+    <string name="button_hide_bona">Hide Bona</string>
 
     <string name="hint_nickname">Nickname</string>
     <string name="hint_fullname">Full Name</string>
@@ -29,6 +30,7 @@
     <string name="hint_longname">Long Name (max 900 char)</string>
     <string name="hint_searchtext">Search Text</string>
     <string name="hint_description">Description</string>
+    <string name="hint_howmuch">How Much?</string>
 
     <string name="action_password">Enter Password</string>
 

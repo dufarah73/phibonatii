@@ -73,21 +73,22 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edit_dateborn"
+                    android:id="@+id/edit_howmuch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
                     android:inputType="date"
-                    android:hint="@string/hint_dateborn" />
+                    android:hint="@string/hint_howmuch" />
 
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/button_change_password"
+                android:id="@+id/button_hidebona"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="@string/button_change_password" />
+                android:onClick="uploadMultipart"
+                android:text="@string/button_hide_bona" />
 
         </LinearLayout>
     </ScrollView>
