@@ -51,14 +51,14 @@ public class MainActivity extends AppCompatActivity {
         objectList = (ListView) findViewById(R.id.listview);
 
         radarList = new ArrayList<Radar>();
-        radarList.add(new Radar(Long.valueOf(25),"7 Bona - Tii$ 290","Num raio de 5 metros"));
-        radarList.add(new Radar(Long.valueOf(26), "48 Bona - Tii$ 7448", "Num raio de 8 metros"));
-        radarList.add(new Radar(Long.valueOf(27), "70 Bona - Tii$ 8299", "Num raio de 13 metros"));
-        radarList.add(new Radar(Long.valueOf(28), "186 Bona - Tii$ 18589", "Num raio de 21 metros"));
-        radarList.add(new Radar(Long.valueOf(28), "357 Bona - Tii$ 85009", "Num raio de 34 metros"));
+        radarList.add(new Radar(Long.valueOf(25),"7 Bonas - Tii$ 290","Num raio de 5 metros"));
+        radarList.add(new Radar(Long.valueOf(26), "48 Bonas - Tii$ 7448", "Num raio de 8 metros"));
+        radarList.add(new Radar(Long.valueOf(27), "70 Bonas - Tii$ 8299", "Num raio de 13 metros"));
+        radarList.add(new Radar(Long.valueOf(28), "186 Bonas - Tii$ 18589", "Num raio de 21 metros"));
+        radarList.add(new Radar(Long.valueOf(28), "357 Bonas - Tii$ 85009", "Num raio de 34 metros"));
         rankingList = new ArrayList<Ranking>();
         rankingList.add(new Ranking(Long.valueOf(35),"MAICON - Tii$ 8300","Maicon da Siva Viana"));
-        rankingList.add(new Ranking(Long.valueOf(36), "COX4893 - Tii$ 743", "Eduardo Cox"));
+        rankingList.add(new Ranking(Long.valueOf(36), "EDUARDO - Tii$ 1000", "Eduardo Farah"));
         rankingList.add(new Ranking(Long.valueOf(37), "JAIR - Tii$ 55", "José Antonio Imair Ramos"));
         bonaList = new ArrayList<Bona>();
         bonaList.add(new Bona(Long.valueOf(15),"Presente - Tii$ 370","Presente para maria"));
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"AROUND","RANKING","BONA"}));
+        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"AROUND","RANKING","MY BONAS"}));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
