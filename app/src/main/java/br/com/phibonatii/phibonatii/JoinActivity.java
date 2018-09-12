@@ -18,6 +18,7 @@ public class JoinActivity extends AppCompatActivity {
     public EditText fieldPassAsking;
     public EditText fieldPassAnswer;
     public EditText fieldPassword;
+    public EditText fieldRepeatPassword;
 
     public String nickName;
     public String fullName;
@@ -25,6 +26,7 @@ public class JoinActivity extends AppCompatActivity {
     public String passAsking;
     public String passAnswer;
     public String password;
+    public String repeatPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class JoinActivity extends AppCompatActivity {
         fieldPassAsking = (EditText) this.findViewById(R.id.edit_passasking);
         fieldPassAnswer = (EditText) this.findViewById(R.id.edit_passanswer);
         fieldPassword = (EditText) this.findViewById(R.id.edit_password);
+        fieldRepeatPassword = (EditText) this.findViewById(R.id.edit_repeat_password);
 
         fieldNickname.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldFullName.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -46,6 +49,7 @@ public class JoinActivity extends AppCompatActivity {
         fieldPassAsking.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldPassAnswer.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldPassword.setBackgroundColor(Color.parseColor("#ffffff"));
+        fieldRepeatPassword.setBackgroundColor(Color.parseColor("#ffffff"));
     }
     private void getValues() {
         getFields();
@@ -55,10 +59,17 @@ public class JoinActivity extends AppCompatActivity {
         passAsking = fieldPassAsking.getText().toString();
         passAnswer = fieldPassAnswer.getText().toString();
         password = fieldPassword.getText().toString();
+        repeatPassword = fieldRepeatPassword.getText().toString();
     }
     private boolean toValidate() {
         getValues();
-        return true;
+        if ( !password.equals(repeatPassword) ) {
+            fieldRepeatPassword.setBackgroundColor(Color.parseColor("#ff0000"));
+            Toast.makeText(this, "Repetição da Password NÃO foi digitada corretamente", Toast.LENGTH_LONG).show();
+            return false;
+        } else {
+            return true;
+        }
     }
     public void join(View view) {
         if (toValidate()) {

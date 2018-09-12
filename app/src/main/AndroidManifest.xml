@@ -13,9 +13,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_flood"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/ic_flood_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".LoginActivity">
@@ -32,7 +32,14 @@
             android:name=".ChangePasswordActivity"
             android:label="@string/activity_change_password_name" />
         <activity
+            android:name=".SimpleChangePasswordActivity"
+            android:label="@string/activity_simple_change_password_name" />
+        <activity
             android:name=".MainActivity"
+            android:label="@string/activity_main_name"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FloodActivity"
             android:label="@string/activity_main_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -44,11 +51,13 @@
         <activity
             android:name=".HideBonaActivity"
             android:label="@string/activity_hide_bona_name" />
+        <activity
+            android:name=".MapaActivity"
+            android:label="@string/activity_change_city_name" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
     </application>
 
 </manifest>

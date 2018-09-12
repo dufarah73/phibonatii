@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".FloodActivity">
+    <item
+        android:id="@+id/flood_menu_regra"
+        android:icon="@drawable/ic_action_regra"
+        app:showAsAction="ifRoom"
+        android:title="Dados"
+        tools:ignore="MissingPrefix" />
+    <item
+        android:id="@+id/flood_menu_local"
+        android:icon="@drawable/ic_action_local"
+        app:showAsAction="ifRoom"
+        android:title="Mapa Local"
+        tools:ignore="MissingPrefix" />
+    <item
+        android:id="@+id/flood_menu_chave"
+        android:icon="@drawable/ic_action_chave"
+        app:showAsAction="ifRoom"
+        android:title="Trocar Senha"
+        tools:ignore="MissingPrefix" />
+    <item
+        android:id="@+id/flood_menu_sair"
+        android:title="@string/menu_logout"/>
+</menu>

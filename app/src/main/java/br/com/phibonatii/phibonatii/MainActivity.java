@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changePassword() {
-        Intent intent = new Intent(this, ChangePasswordActivity.class);
+        Intent intent = new Intent(this, SimpleChangePasswordActivity.class);
         intent.putExtra("token", token);
         startActivity(intent);
     }

@@ -96,7 +96,7 @@ public class WebClient {
         new WebClientTask(this, "join", JSONObjectToString(jsonObject)).execute();
     }
 
-    public void changePassword(String token, String nickName, String fullName, String dateBorn, String passAnswer, String newPassword, IResponseChangePassword responseChangePassword) {
+    public void changePassword(String token, String nickName, String fullName, String dateBorn, String passAnswer, String currentPassword, String newPassword, IResponseChangePassword responseChangePassword) {
         this.responseChangePassword = responseChangePassword;
         JSONObject jsonObject = new JSONObject();
         try {
@@ -107,6 +107,7 @@ public class WebClient {
             jsonObject.put("fullName", fullName);
             jsonObject.put("dateBorn", dateBorn);
             jsonObject.put("passAnswer", passAnswer);
+            jsonObject.put("currentPassword", currentPassword);
             jsonObject.put("newPassword", newPassword);
         } catch (JSONException e) {
             e.printStackTrace();

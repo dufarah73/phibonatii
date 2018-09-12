@@ -67,7 +67,7 @@ public class Localizator implements GoogleApiClient.ConnectionCallbacks, Locatio
         txt.setText("GPS Locate: Latitude: "+String.valueOf(location.getLatitude())+" Longitude: "+String.valueOf(location.getLongitude()));
 
         LatLng coordenada = new LatLng(location.getLatitude(), location.getLongitude());
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordenada, 21);
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordenada, 18);
         googleMap.moveCamera(cameraUpdate);
     }
 }

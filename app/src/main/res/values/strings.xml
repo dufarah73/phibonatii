@@ -1,41 +1,51 @@
 <resources>
-    <string name="app_name">Phibonatii</string>
-    <string name="activity_login_name">Login</string>
-    <string name="activity_change_password_name">Change Password</string>
-    <string name="activity_join_name">Join</string>
+    <string name="app_name">Flood</string>
+    <string name="activity_login_name">Identifique-se</string>
+    <string name="activity_change_password_name">Troque sua Senha</string>
+    <string name="activity_simple_change_password_name">Trocar Senha</string>
+    <string name="activity_join_name">Cadastre-se</string>
     <string name="activity_main_name">Dashboard</string>
-    <string name="activity_new_group_name">New Group</string>
-    <string name="activity_find_group_name">Find Group</string>
-    <string name="activity_hide_bona_name">Hide Bona</string>
+    <string name="activity_new_group_name">Criar Grupo</string>
+    <string name="activity_find_group_name">Localizar Grupo</string>
+    <string name="activity_hide_bona_name">Esconder Bona</string>
+    <string name="activity_change_city_name">Alterar Cidade</string>
 
-    <string name="button_login">Login</string>
-    <string name="button_change_password">Change Password</string>
-    <string name="button_join">Join</string>
-    <string name="button_retrieve_passasking">Retrieve Pass Asking</string>
-    <string name="button_new_group">Create New Group</string>
-    <string name="button_find_group">Find Group</string>
-    <string name="button_meet">Meet Group</string>
-    <string name="button_leave_group">Leave Group</string>
-    <string name="button_logout">Logout</string>
-    <string name="button_hide_bona">Hide Bona</string>
+    <string name="button_login">Identifique-se</string>
+    <string name="button_change_password">Troque sua Senha</string>
+    <string name="button_simple_change_password">Trocar Senha</string>
+    <string name="button_join">Cadastre-se</string>
+    <string name="button_retrieve_passasking">Recuperar Pergunta Pessoal</string>
+    <string name="button_new_group">Criar Grupo</string>
+    <string name="button_find_group">Localizar Grupo</string>
+    <string name="button_meet">Unir-se ao Grupo</string>
+    <string name="button_hide_bona">Esconder Bona</string>
+    <string name="button_change_city">Alterar Cidade</string>
 
-    <string name="hint_nickname">Nickname</string>
-    <string name="hint_fullname">Full Name</string>
-    <string name="hint_dateborn">Date Born</string>
-    <string name="hint_password">Password</string>
-    <string name="hint_newpassword">New Password</string>
-    <string name="hint_passasking">Asking</string>
-    <string name="hint_passanswer">Answer</string>
+    <string name="menu_new_group">Iniciar Novo Grupo</string>
+    <string name="menu_find_group">Unir-se a um Grupo</string>
+    <string name="menu_leave_group">Sair do Grupo</string>
+    <string name="menu_change_password">Trocar Senha</string>
+    <string name="menu_logout">Sair</string>
+
+    <string name="hint_nickname">Apelido da conta</string>
+    <string name="hint_fullname">Nome completo</string>
+    <string name="hint_dateborn">Data de nascimento</string>
+    <string name="hint_city">Cidade</string>
+    <string name="hint_password">Senha</string>
+    <string name="hint_newpassword">Nova senha</string>
+    <string name="hint_currentpassword">Senha atual</string>
+    <string name="hint_repeat_password">Repetir senha</string>
+    <string name="hint_repeat_newpassword">Repetir nova senha</string>
+    <string name="hint_passasking">Qual pergunta só você sabe a resposta?</string>
+    <string name="hint_passanswer">Resposta à pergunta pessoal</string>
     <string name="hint_shortname">Short Name (max 30 char)</string>
     <string name="hint_longname">Long Name (max 900 char)</string>
     <string name="hint_searchtext">Search Text</string>
     <string name="hint_description">Description</string>
     <string name="hint_howmuch">How Much?</string>
 
-    <string name="action_password">Enter Password</string>
-
-    <string name="text_change_password">If forgot password:</string>
-    <string name="text_join">If nickname is not registred:</string>
-    <string name="text_fields_personalquestion">Personal Question - Used only when forget password</string>
-    <string name="text_fields_join">Make sure the ALL 5 data entered above is typed correctly. They can NEVER MORE be changed again.</string>
+    <string name="text_change_password">Se esqueceu sua senha:</string>
+    <string name="text_join">Se sua conta ainda não está registrada:</string>
+    <string name="text_fields_personalquestion">Infomação Pessoal - Usado apenas quando esquecer sua senha</string>
+    <string name="text_fields_join">Tenha certeza que TODOS os 5 dados acima estão digitadas corretamente. Pois esses dados da conta NÃO PODERÃO ser mais alterados depois.</string>
 </resources>
