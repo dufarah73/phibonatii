@@ -54,6 +54,9 @@
         <activity
             android:name=".MapaActivity"
             android:label="@string/activity_change_city_name" />
+        <activity
+            android:name=".ParamsActivity"
+            android:label="@string/activity_params" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"

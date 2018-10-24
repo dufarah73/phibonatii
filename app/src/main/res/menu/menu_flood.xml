@@ -7,7 +7,7 @@
         android:id="@+id/flood_menu_regra"
         android:icon="@drawable/ic_action_regra"
         app:showAsAction="ifRoom"
-        android:title="Dados"
+        android:title="Parâmetros"
         tools:ignore="MissingPrefix" />
     <item
         android:id="@+id/flood_menu_local"

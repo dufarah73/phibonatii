@@ -60,19 +60,36 @@
                         android:layout_height="wrap_content">
 
                         <TextView
+                            android:id="@+id/text1"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Previsão de chuva: 25%"
+                            android:text="Previsão de chuva: %"
                             android:textSize="18dp"
                             android:textStyle="italic" />
 
                         <TextView
+                            android:id="@+id/text2"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Altura da maré: 0,2m"
+                            android:text="Altura da maré: m"
                             android:textSize="18dp"
                             android:textStyle="italic" />
 
+                        <TextView
+                            android:id="@+id/text3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Nível do rio: m"
+                            android:textSize="18dp"
+                            android:textStyle="italic" />
+
+                        <TextView
+                            android:id="@+id/text4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Índice pluviométrico: mm"
+                            android:textSize="18dp"
+                            android:textStyle="italic" />
                     </android.support.design.widget.TextInputLayout>
 
                     <RelativeLayout

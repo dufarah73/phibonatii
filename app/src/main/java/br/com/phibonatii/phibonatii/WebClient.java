@@ -45,6 +45,10 @@ interface IResponseLeaveGroup {
     public void onPostExecute(Context context, String serverError);
 }
 
+interface IResponseParams {
+    public void onPostExecute(Context context, List<Group> groups, String serverError, List<String> fullNameErros, List<String> dateBornErros, List<String> passAskingErros, List<String> passAnswerErros);
+}
+
 public class WebClient {
 
     public Context context;
@@ -56,6 +60,7 @@ public class WebClient {
     private IResponseFindGroup responseFindGroup;
     private IResponseMeetGroup responseMeetGroup;
     private IResponseLeaveGroup responseLeaveGroup;
+    private IResponseParams responseParams;
 
     public String jsonReturned;
 
@@ -178,6 +183,23 @@ public class WebClient {
             e.printStackTrace();
         }
         new WebClientTask(this, "leavegroup", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void params(String token, String previsaoChuva, String alturaMare, String nivelRio, String indicePluviometrico, IResponseParams responseParams) {
+        this.responseParams = responseParams;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (token != "") {
+                jsonObject.put("token", token);
+            }
+            jsonObject.put("previsaoChuva", previsaoChuva);
+            jsonObject.put("alturaMare", alturaMare);
+            jsonObject.put("nivelRio", nivelRio);
+            jsonObject.put("indicePluviometrico", indicePluviometrico);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "params", JSONObjectToString(jsonObject)).execute();
     }
 
     public void onPostExecute(String resposta) {
@@ -305,6 +327,9 @@ public class WebClient {
         }
         if (responseLeaveGroup != null) {
             responseLeaveGroup.onPostExecute(context, error);
+        }
+        if (responseParams != null) {
+            responseParams.onPostExecute(context, groups, error, fullNameErros, dateBornErros, passAskingErros, passAnswerErros);
         }
     }
 

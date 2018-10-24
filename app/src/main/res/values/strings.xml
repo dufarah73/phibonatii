@@ -9,6 +9,7 @@
     <string name="activity_find_group_name">Localizar Grupo</string>
     <string name="activity_hide_bona_name">Esconder Bona</string>
     <string name="activity_change_city_name">Alterar Cidade</string>
+    <string name="activity_params">Parâmetros</string>
 
     <string name="button_login">Identifique-se</string>
     <string name="button_change_password">Troque sua Senha</string>
