@@ -27,7 +27,7 @@ public class WebClientTask extends AsyncTask<Void, Void, String> {
 
     private String post() {
         try {
-            URL url = new URL("http://www.incorpnet.com.br/demo/phibonatii.dll/"+action);
+            URL url = new URL("http://vpsw0088.publiccloud.com.br/phibonatii.dll/"+action);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Content-type", "application/json");
             connection.setRequestProperty("Accept", "application/json");
