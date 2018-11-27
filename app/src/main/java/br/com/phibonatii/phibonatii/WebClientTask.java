@@ -45,7 +45,7 @@ public class WebClientTask extends AsyncTask<Void, Void, String> {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return "{'Error':'Sem Conexão'}";
     }
 
     @Override
