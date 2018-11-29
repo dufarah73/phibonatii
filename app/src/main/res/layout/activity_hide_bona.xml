@@ -87,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:onClick="uploadMultipart"
+                android:onClick="imageToBase64"
                 android:text="@string/button_hide_bona" />
 
         </LinearLayout>

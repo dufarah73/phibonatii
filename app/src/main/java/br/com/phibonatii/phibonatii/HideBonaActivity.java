@@ -15,6 +15,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,12 +23,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.location.LocationServices;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 public class HideBonaActivity extends AppCompatActivity {
@@ -71,6 +75,29 @@ public class HideBonaActivity extends AppCompatActivity {
         }
     }
 
+    public void imageToBase64(View v) {
+        try {
+            InputStream inputStream = new FileInputStream(caminhoFoto);//You can get an inputStream using any IO API
+            byte[] bytes;
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            ByteArrayOutputStream output = new ByteArrayOutputStream();
+            try {
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    output.write(buffer, 0, bytesRead);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            bytes = output.toByteArray();
+            String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
+            Toast.makeText(this, encodedString, Toast.LENGTH_SHORT).show();
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+/*
     public void capturePhoto(View v) {
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -103,8 +130,8 @@ public class HideBonaActivity extends AppCompatActivity {
             }
         }
     }
+*/
 
-/*
     public void capturePhoto(View v) {
         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
@@ -128,6 +155,6 @@ public class HideBonaActivity extends AppCompatActivity {
             }
         }
     }
-*/
+
 
 }
