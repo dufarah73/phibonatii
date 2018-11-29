@@ -48,8 +48,8 @@ public class Localizator implements GoogleApiClient.ConnectionCallbacks, Locatio
         request.setInterval(1000);
         request.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION ) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         } else {
             LocationServices.FusedLocationApi.requestLocationUpdates(client, request, this);
         }
@@ -64,7 +64,13 @@ public class Localizator implements GoogleApiClient.ConnectionCallbacks, Locatio
     @Override
     public void onLocationChanged(Location location) {
         TextView txt = (TextView) activity.findViewById(R.id.text_locate);
-        txt.setText("GPS Locate: Latitude: "+String.valueOf(location.getLatitude())+" Longitude: "+String.valueOf(location.getLongitude()));
+        txt.setText("Localização: Latitude: " + String.valueOf(location.getLatitude()) + " Longitude: " + String.valueOf(location.getLongitude()));
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+        } else {
+            googleMap.setMyLocationEnabled(true);
+        }
 
         LatLng coordenada = new LatLng(location.getLatitude(), location.getLongitude());
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(coordenada, 18);

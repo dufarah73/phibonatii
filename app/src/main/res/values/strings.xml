@@ -50,5 +50,7 @@
     <string name="text_fields_personalquestion">Infomação Pessoal - Usado apenas quando esquecer sua senha</string>
     <string name="text_fields_join">Tenha certeza que TODOS os 5 dados acima estão digitados corretamente. Pois esses dados da conta NÃO PODERÃO ser mais alterados depois.</string>
 
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyDz25GKuwu9dTMBUZOPx7EkUeNbQFU9wS4</string>
+    <string name="google_maps_key_debug" templateMergeStrategy="preserve" translatable="false">AIzaSyDz25GKuwu9dTMBUZOPx7EkUeNbQFU9wS4</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyAsXpadntJ711jrcMKCzfr5cYE1zdfFv5M</string>
+
 </resources>
