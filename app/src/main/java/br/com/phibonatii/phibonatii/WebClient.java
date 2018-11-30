@@ -45,6 +45,10 @@ interface IResponseLeaveGroup {
     public void onPostExecute(Context context, String serverError);
 }
 
+interface IResponseHideBona {
+    public void onPostExecute(Context context, String serverError);
+}
+
 interface IResponseParams {
     public void onPostExecute(Context context, List<Group> groups, String serverError, List<String> fullNameErros, List<String> dateBornErros, List<String> passAskingErros, List<String> passAnswerErros);
 }
@@ -60,6 +64,7 @@ public class WebClient {
     private IResponseFindGroup responseFindGroup;
     private IResponseMeetGroup responseMeetGroup;
     private IResponseLeaveGroup responseLeaveGroup;
+    private IResponseHideBona responseHideBona;
     private IResponseParams responseParams;
 
     public String jsonReturned;
@@ -183,6 +188,23 @@ public class WebClient {
             e.printStackTrace();
         }
         new WebClientTask(this, "leavegroup", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void hideBona(String token, String denomination, String specification, String lat, String lng, String photo, String howmuch, IResponseHideBona responseHideBona) {
+        this.responseHideBona = responseHideBona;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("denomination", denomination);
+            jsonObject.put("specification", specification);
+            jsonObject.put("lat", lat);
+            jsonObject.put("lng", lng);
+            jsonObject.put("photo", photo);
+            jsonObject.put("howmuch", howmuch);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "hidebona", JSONObjectToString(jsonObject)).execute();
     }
 
     public void params(String token, String previsaoChuva, String alturaMare, String nivelRio, String indicePluviometrico, IResponseParams responseParams) {
@@ -327,6 +349,9 @@ public class WebClient {
         }
         if (responseLeaveGroup != null) {
             responseLeaveGroup.onPostExecute(context, error);
+        }
+        if (responseHideBona != null) {
+            responseHideBona.onPostExecute(context, error);
         }
         if (responseParams != null) {
             responseParams.onPostExecute(context, groups, error, fullNameErros, dateBornErros, passAskingErros, passAnswerErros);

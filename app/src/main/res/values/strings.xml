@@ -42,7 +42,8 @@
     <string name="hint_shortname">Short Name (max 30 char)</string>
     <string name="hint_longname">Long Name (max 900 char)</string>
     <string name="hint_searchtext">Search Text</string>
-    <string name="hint_description">Description</string>
+    <string name="hint_denomination">Denomination</string>
+    <string name="hint_specification">Specification</string>
     <string name="hint_howmuch">How Much?</string>
 
     <string name="text_change_password">Se esqueceu sua senha:</string>

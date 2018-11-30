@@ -24,13 +24,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <AutoCompleteTextView
-                    android:id="@+id/edit_description"
+                <EditText
+                    android:id="@+id/edit_denomination"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/hint_description"
-                    android:maxLines="1"
-                    android:singleLine="true" />
+                    android:hint="@string/hint_denomination"
+                    android:inputType="text" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -77,8 +76,22 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:inputType="date"
-                    android:hint="@string/hint_howmuch" />
+                    android:hint="@string/hint_howmuch"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edit_specification"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/hint_specification"
+                    android:inputType="textMultiLine" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -87,7 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:onClick="imageToBase64"
+                android:onClick="hideBona"
                 android:text="@string/button_hide_bona" />
 
         </LinearLayout>

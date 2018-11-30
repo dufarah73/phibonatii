@@ -2,36 +2,38 @@ package br.com.phibonatii.phibonatii;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.gms.location.LocationServices;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.UUID;
 
 public class HideBonaActivity extends AppCompatActivity {
@@ -39,9 +41,17 @@ public class HideBonaActivity extends AppCompatActivity {
     private static final String UPLOAD_URL = "http://192.168.94.1/AndroidImageUpload/upload.php";
     private static final int CODIGO_IMAGEM = 345;
     private static final int CODIGO_CAMERA = 567;
-    private String caminhoFoto;
-    public EditText fieldDescription;
-    public String description;
+
+    private String token;
+
+    public EditText fieldDenomination;
+    public EditText fieldSpecification;
+    public EditText fieldHowMuch;
+
+    private String caminhoFoto, caminhoFotoP, photo, lat, lng;
+    public String denomination;
+    public String specification;
+    public String howMuch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,28 +66,67 @@ public class HideBonaActivity extends AppCompatActivity {
         FragmentTransaction fragTrans = fragMan.beginTransaction();
         fragTrans.replace(R.id.frame_localization, new LocalizationFragment());
         fragTrans.commit();
+
+        token = getIntent().getStringExtra("token");
     }
 
-    public void uploadMultipart(View v) {
+    public void uploadMultipart() {
         try {
-            fieldDescription = (EditText) this.findViewById(R.id.edit_description);
-            description = fieldDescription.getText().toString();
             String uploadId = UUID.randomUUID().toString();
             new MultipartUploadRequest(this, uploadId, UPLOAD_URL)
                     .addFileToUpload(caminhoFoto, "image")
-                    .addParameter("description", description)
+                    .addParameter("denomination", denomination)
                     .setNotificationConfig(new UploadNotificationConfig())
                     .setMaxRetries(2)
-                    .startUpload(); //Starting the upload
+                    .startUpload(); // Starting the upload
 
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
-    public void imageToBase64(View v) {
+    public void getCompressed() {
+        File cacheDir = this.getExternalCacheDir();
+        if(cacheDir == null)
+            cacheDir = this.getCacheDir();
+
+        String rootDir = cacheDir.getAbsolutePath() + "/ImageCompressor";
+        File root = new File(rootDir);
+
+        if(!root.exists())
+            root.mkdirs();
+
+        Bitmap bitmap = decodeImageFromFiles(caminhoFoto, /* your desired width*/300, /*your desired height*/ 300);
+
+        java.util.Date today = java.util.Calendar.getInstance().getTime();
+        SimpleDateFormat SDF = new SimpleDateFormat("yyyymmddhhmmss");
+        String childFile = SDF.format(today) + ".jpg";
+        File compressed = new File(root, childFile /*Your desired format*/);
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 1, byteArrayOutputStream);
+
+        FileOutputStream fileOutputStream = null;
         try {
-            InputStream inputStream = new FileInputStream(caminhoFoto);//You can get an inputStream using any IO API
+            fileOutputStream = new FileOutputStream(compressed);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            fileOutputStream.write(byteArrayOutputStream.toByteArray());
+            fileOutputStream.flush();
+            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        caminhoFotoP = rootDir + "/" + childFile;
+    }
+
+    public void imageToBase64() {
+        try {
+            InputStream inputStream = new FileInputStream(caminhoFotoP); // You can get an inputStream using any IO API
             byte[] bytes;
             byte[] buffer = new byte[8192];
             int bytesRead;
@@ -90,11 +139,23 @@ public class HideBonaActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
             bytes = output.toByteArray();
-            String encodedString = Base64.encodeToString(bytes, Base64.DEFAULT);
-            Toast.makeText(this, encodedString, Toast.LENGTH_SHORT).show();
+            photo = Base64.encodeToString(bytes, Base64.DEFAULT);
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+    public Bitmap decodeImageFromFiles(String path, int width, int height) {
+        BitmapFactory.Options scaleOptions = new BitmapFactory.Options();
+        scaleOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, scaleOptions);
+        int scale = 1;
+        while (scaleOptions.outWidth / scale / 2 >= width
+                && scaleOptions.outHeight / scale / 2 >= height) {
+            scale *= 2;
+        }
+        BitmapFactory.Options outOptions = new BitmapFactory.Options();
+        outOptions.inSampleSize = scale;
+        return BitmapFactory.decodeFile(path, outOptions);
     }
 
 /*
@@ -145,16 +206,71 @@ public class HideBonaActivity extends AppCompatActivity {
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == CODIGO_CAMERA) {
                 if (caminhoFoto != null) {
-                    Bitmap bitmap = BitmapFactory.decodeFile(caminhoFoto);
+                    getCompressed();
+                    Bitmap bitmap = BitmapFactory.decodeFile(caminhoFotoP);
                     Bitmap bitmapReduzido = Bitmap.createScaledBitmap(bitmap, 300, 300, true);
                     ImageView campoFoto = (ImageView) this.findViewById(R.id.formulario_foto);
                     campoFoto.setImageBitmap(bitmapReduzido);
                     campoFoto.setScaleType(ImageView.ScaleType.FIT_XY);
-                    campoFoto.setTag(caminhoFoto);
+                    imageToBase64();
+                    TextView txt = (TextView) this.findViewById(R.id.edit_specification);
+                    txt.setText(caminhoFoto + "**" + caminhoFotoP + "**" + String.valueOf(photo.length()));
                 }
             }
         }
     }
 
+    private void getFields() {
+        fieldDenomination = (EditText) this.findViewById(R.id.edit_denomination);
+        fieldSpecification = (EditText) this.findViewById(R.id.edit_specification);
+        fieldHowMuch = (EditText) this.findViewById(R.id.edit_howmuch);
 
+        fieldDenomination.setBackgroundColor(Color.parseColor("#ffffff"));
+        fieldSpecification.setBackgroundColor(Color.parseColor("#ffffff"));
+        fieldHowMuch.setBackgroundColor(Color.parseColor("#ffffff"));
+    }
+    private void getValues() {
+        getFields();
+        denomination = fieldDenomination.getText().toString();
+        specification = fieldSpecification.getText().toString();
+        howMuch = fieldHowMuch.getText().toString();
+    }
+    private boolean toValidate() {
+        getValues();
+        if ((caminhoFoto == null) || (photo == null)) {
+            Toast.makeText(this, "Falta foto", Toast.LENGTH_LONG).show();
+        } else {
+            lat = "1";
+            lng = "2";
+            if ((lat == null) || (lng == null)) {
+                Toast.makeText(this, "Falta localização", Toast.LENGTH_LONG).show();
+            } else {
+                return true;
+            }
+        }
+        return false;
+    }
+    public void hideBona(View view) {
+        if (toValidate()) {
+            WebClient webClient = new WebClient(this);
+            webClient.hideBona(token, denomination, specification, lat, lng, photo, howMuch, new ResponseHideBona());
+        }
+    }
+}
+
+class ResponseHideBona implements IResponseHideBona {
+    public void onPostExecute(Context context, String serverError) {
+        String msgErros = "";
+        HideBonaActivity app = (HideBonaActivity) context;
+
+        if (serverError != "") {
+            msgErros = "Erro no servidor:" + "\t" + serverError + "\t";
+        }
+
+        if (msgErros != "") {
+            Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
+        } else {
+            app.finish();
+        }
+    }
 }
