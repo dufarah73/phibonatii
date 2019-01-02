@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,6 +23,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +35,7 @@ import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.UUID;
 
@@ -40,7 +43,8 @@ public class HideBonaActivity extends AppCompatActivity {
 
     private static final String UPLOAD_URL = "http://192.168.94.1/AndroidImageUpload/upload.php";
     private static final int CODIGO_IMAGEM = 345;
-    private static final int CODIGO_CAMERA = 567;
+    private static final int CAMERA_REQUEST_CODE = 1888;
+    private static final int CAMERA_PERMISSION_CODE = 100;
 
     private String token;
 
@@ -48,7 +52,7 @@ public class HideBonaActivity extends AppCompatActivity {
     public EditText fieldSpecification;
     public EditText fieldHowMuch;
 
-    private String caminhoFoto, caminhoFotoP, photo, lat, lng;
+    private String photo, lat, lng;
     public String denomination;
     public String specification;
     public String howMuch;
@@ -57,11 +61,11 @@ public class HideBonaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_hide_bona);
-
+/*
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 456);
         }
-
+*/
         FragmentManager fragMan = getSupportFragmentManager();
         FragmentTransaction fragTrans = fragMan.beginTransaction();
         fragTrans.replace(R.id.frame_localization, new LocalizationFragment());
@@ -69,7 +73,7 @@ public class HideBonaActivity extends AppCompatActivity {
 
         token = getIntent().getStringExtra("token");
     }
-
+/*
     public void uploadMultipart() {
         try {
             String uploadId = UUID.randomUUID().toString();
@@ -84,7 +88,8 @@ public class HideBonaActivity extends AppCompatActivity {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-
+*/
+/*
     public void getCompressed() {
         File cacheDir = this.getExternalCacheDir();
         if(cacheDir == null)
@@ -96,12 +101,12 @@ public class HideBonaActivity extends AppCompatActivity {
         if(!root.exists())
             root.mkdirs();
 
-        Bitmap bitmap = decodeImageFromFiles(caminhoFoto, /* your desired width*/300, /*your desired height*/ 300);
+        Bitmap bitmap = decodeImageFromFiles(caminhoFoto, 300,300);
 
         java.util.Date today = java.util.Calendar.getInstance().getTime();
         SimpleDateFormat SDF = new SimpleDateFormat("yyyymmddhhmmss");
         String childFile = SDF.format(today) + ".jpg";
-        File compressed = new File(root, childFile /*Your desired format*/);
+        File compressed = new File(root, childFile);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
@@ -123,7 +128,21 @@ public class HideBonaActivity extends AppCompatActivity {
 
         caminhoFotoP = rootDir + "/" + childFile;
     }
-
+    public Bitmap decodeImageFromFiles(String path, int width, int height) {
+        BitmapFactory.Options scaleOptions = new BitmapFactory.Options();
+        scaleOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(path, scaleOptions);
+        int scale = 1;
+        while (scaleOptions.outWidth / scale / 2 >= width
+                && scaleOptions.outHeight / scale / 2 >= height) {
+            scale *= 2;
+        }
+        BitmapFactory.Options outOptions = new BitmapFactory.Options();
+        outOptions.inSampleSize = scale;
+        return BitmapFactory.decodeFile(path, outOptions);
+    }
+*/
+/*
     public void imageToBase64() {
         try {
             InputStream inputStream = new FileInputStream(caminhoFotoP); // You can get an inputStream using any IO API
@@ -144,19 +163,7 @@ public class HideBonaActivity extends AppCompatActivity {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
-    public Bitmap decodeImageFromFiles(String path, int width, int height) {
-        BitmapFactory.Options scaleOptions = new BitmapFactory.Options();
-        scaleOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(path, scaleOptions);
-        int scale = 1;
-        while (scaleOptions.outWidth / scale / 2 >= width
-                && scaleOptions.outHeight / scale / 2 >= height) {
-            scale *= 2;
-        }
-        BitmapFactory.Options outOptions = new BitmapFactory.Options();
-        outOptions.inSampleSize = scale;
-        return BitmapFactory.decodeFile(path, outOptions);
-    }
+*/
 
 /*
     public void capturePhoto(View v) {
@@ -194,17 +201,65 @@ public class HideBonaActivity extends AppCompatActivity {
 */
 
     public void capturePhoto(View v) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
+        } else {
+            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+        }
+/*
         Intent intentCamera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         caminhoFoto = getExternalFilesDir(null) + "/" + System.currentTimeMillis() + ".jpg";
         File arquivoFoto = new File(caminhoFoto);
         intentCamera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(arquivoFoto));
         startActivityForResult(intentCamera, CODIGO_CAMERA);
+*/
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "permissão concedida", Toast.LENGTH_LONG).show();
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
+            } else {
+                Toast.makeText(this, "permissão negada", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            ImageView imageView = (ImageView) this.findViewById(R.id.formulario_foto);
+            TextView textView = (TextView) this.findViewById(R.id.edit_specification);
+
+            Bitmap bitmap1 = (Bitmap) data.getExtras().get("data");
+/*
+            int byteSize = bitmap1.getRowBytes() * bitmap1.getHeight();
+            ByteBuffer byteBuffer = ByteBuffer.allocate(byteSize);
+            bitmap1.copyPixelsToBuffer(byteBuffer);
+            byte[] byteArray1 = byteBuffer.array();
+*/
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            bitmap1.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream);
+            byte[] byteArray2 = byteArrayOutputStream.toByteArray();
+
+            ByteArrayInputStream arrayInputStream = new ByteArrayInputStream(byteArray2);
+            Bitmap bitmap2 = BitmapFactory.decodeStream(arrayInputStream);
+
+            photo = Base64.encodeToString(byteArray2, Base64.DEFAULT);
+
+            imageView.setImageBitmap(bitmap2);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            textView.setText(String.valueOf(photo.length()));
+        }
+/*
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CODIGO_CAMERA) {
+            if (requestCode == CAMERA_REQUEST_CODE) {
                 if (caminhoFoto != null) {
                     getCompressed();
                     Bitmap bitmap = BitmapFactory.decodeFile(caminhoFotoP);
@@ -218,6 +273,7 @@ public class HideBonaActivity extends AppCompatActivity {
                 }
             }
         }
+*/
     }
 
     private void getFields() {
@@ -237,7 +293,7 @@ public class HideBonaActivity extends AppCompatActivity {
     }
     private boolean toValidate() {
         getValues();
-        if ((caminhoFoto == null) || (photo == null)) {
+        if (photo == null) {
             Toast.makeText(this, "Falta foto", Toast.LENGTH_LONG).show();
         } else {
             lat = "1";
