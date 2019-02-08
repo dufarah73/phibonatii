@@ -6,12 +6,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.util.List;
 import java.util.ArrayList;
 
 import br.com.phibonatii.phibonatii.model.Group;
+import br.com.phibonatii.phibonatii.model.Bona;
+import br.com.phibonatii.phibonatii.model.Radar;
+import br.com.phibonatii.phibonatii.model.Ranking;
 
 interface IResponseLogin {
     public void onPostExecute(Context context, String token, List<Group> groups, String serverError);
@@ -46,7 +47,19 @@ interface IResponseLeaveGroup {
 }
 
 interface IResponseHideBona {
-    public void onPostExecute(Context context, String serverError);
+    public void onPostExecute(Context context, String serverError, List<String> denominationErros, List<String> specificationErros, List<String> howMuchErros);
+}
+
+interface IResponseMyBonas {
+    public void onPostExecute(Context context, List<Bona> bonas, String serverError);
+}
+
+interface IResponseRadar {
+    public void onPostExecute(Context context, List<Radar> radar, String serverError);
+}
+
+interface IResponseRanking {
+    public void onPostExecute(Context context, List<Ranking> ranking, String serverError);
 }
 
 interface IResponseParams {
@@ -65,6 +78,9 @@ public class WebClient {
     private IResponseMeetGroup responseMeetGroup;
     private IResponseLeaveGroup responseLeaveGroup;
     private IResponseHideBona responseHideBona;
+    private IResponseMyBonas responseMyBonas;
+    private IResponseRadar responseRadar;
+    private IResponseRanking responseRanking;
     private IResponseParams responseParams;
 
     public String jsonReturned;
@@ -207,6 +223,42 @@ public class WebClient {
         new WebClientTask(this, "hidebona", JSONObjectToString(jsonObject)).execute();
     }
 
+    public void myBonas(String token, Long groupId, IResponseMyBonas responseMyBonas) {
+        this.responseMyBonas = responseMyBonas;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("groupId", groupId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "mybonas", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void radar(String token, Long groupId, IResponseRadar responseRadar) {
+        this.responseRadar = responseRadar;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("groupId", groupId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "radar", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void ranking(String token, Long groupId, IResponseRanking responseRanking) {
+        this.responseRanking = responseRanking;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("groupId", groupId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "ranking", JSONObjectToString(jsonObject)).execute();
+    }
+
     public void params(String token, String previsaoChuva, String alturaMare, String nivelRio, String indicePluviometrico, IResponseParams responseParams) {
         this.responseParams = responseParams;
         JSONObject jsonObject = new JSONObject();
@@ -232,6 +284,9 @@ public class WebClient {
 
         String token = "";
         List<Group> groups = new ArrayList<Group>();
+        List<Bona> bonas = new ArrayList<Bona>();
+        List<Radar> radar = new ArrayList<Radar>();
+        List<Ranking> ranking = new ArrayList<Ranking>();
         String passAsking = "";
 
         String error = "";
@@ -246,6 +301,9 @@ public class WebClient {
         List<String> newPasswordErros = new ArrayList<String> ();
         List<String> shortNameErros = new ArrayList<String>();
         List<String> longNameErros = new ArrayList<String>();
+        List<String> denominationErros = new ArrayList<String>();
+        List<String> specificationErros = new ArrayList<String>();
+        List<String> howMuchErros = new ArrayList<String>();
 
         try {
             jsonObject = new JSONObject(this.jsonReturned);
@@ -260,6 +318,27 @@ public class WebClient {
             if (arr != null) {
                 for (int i = 2; i < arr.length(); i += 3) {
                     groups.add(new Group(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
+                }
+            }
+
+            arr = jsonObject.optJSONArray("Bonas");
+            if (arr != null) {
+                for (int i = 2; i < arr.length(); i += 3) {
+                    bonas.add(new Bona(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
+                }
+            }
+
+            arr = jsonObject.optJSONArray("Radar");
+            if (arr != null) {
+                for (int i = 2; i < arr.length(); i += 3) {
+                    radar.add(new Radar(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
+                }
+            }
+
+            arr = jsonObject.optJSONArray("Ranking");
+            if (arr != null) {
+                for (int i = 2; i < arr.length(); i += 3) {
+                    ranking.add(new Ranking(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
                 }
             }
 
@@ -323,6 +402,24 @@ public class WebClient {
                         longNameErros.add(arr.optString(i));
                     }
                 }
+                arr = errors.optJSONArray("Denomination");
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
+                        denominationErros.add(arr.optString(i));
+                    }
+                }
+                arr = errors.optJSONArray("Specification");
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
+                        specificationErros.add(arr.optString(i));
+                    }
+                }
+                arr = errors.optJSONArray("How Much");
+                if (arr != null) {
+                    for (int i = 0; i < arr.length(); i++) {
+                        howMuchErros.add(arr.optString(i));
+                    }
+                }
             }
         }
 
@@ -351,7 +448,16 @@ public class WebClient {
             responseLeaveGroup.onPostExecute(context, error);
         }
         if (responseHideBona != null) {
-            responseHideBona.onPostExecute(context, error);
+            responseHideBona.onPostExecute(context, error, denominationErros, specificationErros, howMuchErros);
+        }
+        if (responseMyBonas != null) {
+            responseMyBonas.onPostExecute(context, bonas, error);
+        }
+        if (responseRadar != null) {
+            responseRadar.onPostExecute(context, radar, error);
+        }
+        if (responseRanking != null) {
+            responseRanking.onPostExecute(context, ranking, error);
         }
         if (responseParams != null) {
             responseParams.onPostExecute(context, groups, error, fullNameErros, dateBornErros, passAskingErros, passAnswerErros);

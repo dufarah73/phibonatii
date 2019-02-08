@@ -35,11 +35,6 @@ public class MainActivity extends AppCompatActivity {
     private String token;
     private List<Group> groups;
 
-    private ListView objectList;
-    private List<Radar> radarList;
-    private List<Ranking> rankingList;
-    private List<Bona> bonaList;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,24 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
         token = getIntent().getStringExtra("token");
         groups = (List<Group>) getIntent().getSerializableExtra("groups");
-
-        objectList = (ListView) findViewById(R.id.listview);
-
-        radarList = new ArrayList<Radar>();
-        radarList.add(new Radar(Long.valueOf(25),"7 Bonas - Tii$ 290","Num raio de 5 metros"));
-        radarList.add(new Radar(Long.valueOf(26), "48 Bonas - Tii$ 7448", "Num raio de 8 metros"));
-        radarList.add(new Radar(Long.valueOf(27), "70 Bonas - Tii$ 8299", "Num raio de 13 metros"));
-        radarList.add(new Radar(Long.valueOf(28), "186 Bonas - Tii$ 18589", "Num raio de 21 metros"));
-        radarList.add(new Radar(Long.valueOf(28), "357 Bonas - Tii$ 85009", "Num raio de 34 metros"));
-        rankingList = new ArrayList<Ranking>();
-        rankingList.add(new Ranking(Long.valueOf(35),"MAICON - Tii$ 8300","Maicon da Siva Viana"));
-        rankingList.add(new Ranking(Long.valueOf(36), "EDUARDO - Tii$ 1000", "Eduardo Farah"));
-        rankingList.add(new Ranking(Long.valueOf(37), "JAIR - Tii$ 55", "José Antonio Imair Ramos"));
-        bonaList = new ArrayList<Bona>();
-        bonaList.add(new Bona(Long.valueOf(15),"Presente - Tii$ 370","Presente para maria"));
-        bonaList.add(new Bona(Long.valueOf(16), "Cigarro - Tii$ 433", "Roxo"));
-        bonaList.add(new Bona(Long.valueOf(17), "Jujuba - Tii$ 155", "Pacote de jujuba sortida"));
-        bonaList.add(new Bona(Long.valueOf(17), "Pacote - Tii$ 42", "Embrulho de fogos"));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,20 +52,18 @@ public class MainActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                TabLayout tb = (TabLayout) findViewById(R.id.tabs);
-                int myTabPosition = tb.getSelectedTabPosition();
                 int mySpinnerPosition = position;
-
+                TabLayout tb = (TabLayout) findViewById(R.id.tabs);
+                TabLayout.Tab tab = tb.getTabAt(tb.getSelectedTabPosition());
+                Long idGroup = (Long) tab.getTag();
                 if (mySpinnerPosition == 0) {
-                    displayListRadar(radarList);
+                    displayListRadar(idGroup);
                 } else
                 if (mySpinnerPosition == 1) {
-                    displayListRanking(rankingList);
+                    displayListRanking(idGroup);
                 } else {
-                    displayListBona(bonaList);
+                    displayListMyBonas(idGroup);
                 };
-
-                Toast.makeText(tb.getContext(), "spi -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -102,8 +77,15 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 Spinner sp = (Spinner) findViewById(R.id.spinner);
                 int mySpinnerPosition = sp.getSelectedItemPosition();
-                int myTabPosition = tab.getPosition();
-                Toast.makeText(sp.getContext(), "tab("+tab.getTag()+") -> sp:"+String.valueOf(mySpinnerPosition)+",tb:"+String.valueOf(myTabPosition), Toast.LENGTH_LONG).show();
+                Long groupId = (Long) tab.getTag();
+                if (mySpinnerPosition == 0) {
+                    displayListRadar(groupId);
+                } else
+                if (mySpinnerPosition == 1) {
+                    displayListRanking(groupId);
+                } else {
+                    displayListMyBonas(groupId);
+                };
             }
 
             @Override
@@ -141,16 +123,20 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    private void displayListRadar(List<Radar> objects) {
-        objectList.setAdapter(new RadarAdapter(this, objects));
+    private void displayListMyBonas(Long groupId) {
+        WebClient webClient = new WebClient(this);
+        webClient.myBonas(token, groupId, new ResponseMyBonas());
     }
 
-    private void displayListRanking(List<Ranking> objects) {
-        objectList.setAdapter(new RankingAdapter(this, objects));
+    private void displayListRadar(Long groupId) {
+        WebClient webClient = new WebClient(this);
+        // pegar lat lng
+        webClient.radar(token, groupId, new ResponseRadar());
     }
 
-    private void displayListBona(List<Bona> objects) {
-        objectList.setAdapter(new BonaAdapter(this, objects));
+    private void displayListRanking(Long groupId) {
+        WebClient webClient = new WebClient(this);
+        webClient.ranking(token, groupId, new ResponseRanking());
     }
 
     public void newGroup() {
@@ -168,9 +154,10 @@ public class MainActivity extends AppCompatActivity {
     public void leaveGroup() {
         TabLayout tb = (TabLayout) findViewById(R.id.tabs);
         TabLayout.Tab tab = tb.getTabAt(tb.getSelectedTabPosition());
+        Long idGroup = (Long) tab.getTag();
 
         WebClient webClient = new WebClient(this);
-        webClient.leaveGroup(token, (Long) tab.getTag(), new ResponseLeaveGroup());
+        webClient.leaveGroup(token, idGroup, new ResponseLeaveGroup());
     }
 
     public void changePassword() {
@@ -246,6 +233,45 @@ class ResponseLeaveGroup implements IResponseLeaveGroup {
             String s = tb.getTabAt(tb.getSelectedTabPosition()).getText().toString();
             tb.removeTabAt(tb.getSelectedTabPosition());
             Toast.makeText(context, "Grupo "+s+" Removido", Toast.LENGTH_LONG).show();
+        }
+    }
+}
+
+class ResponseMyBonas implements IResponseMyBonas {
+    public void onPostExecute(Context context, List<Bona> bonas, String serverError) {
+        MainActivity app = (MainActivity) context;
+        ListView objectList = (ListView) app.findViewById(R.id.listview);
+
+        if (serverError != "") {
+            Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
+        } else {
+            objectList.setAdapter(new BonaAdapter(app, bonas));
+        }
+    }
+}
+
+class ResponseRadar implements IResponseRadar {
+    public void onPostExecute(Context context, List<Radar> radar, String serverError) {
+        MainActivity app = (MainActivity) context;
+        ListView objectList = (ListView) app.findViewById(R.id.listview);
+
+        if (serverError != "") {
+            Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
+        } else {
+            objectList.setAdapter(new RadarAdapter(app, radar));
+        }
+    }
+}
+
+class ResponseRanking implements IResponseRanking {
+    public void onPostExecute(Context context, List<Ranking> ranking, String serverError) {
+        MainActivity app = (MainActivity) context;
+        ListView objectList = (ListView) app.findViewById(R.id.listview);
+
+        if (serverError != "") {
+            Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
+        } else {
+            objectList.setAdapter(new RankingAdapter(app, ranking));
         }
     }
 }

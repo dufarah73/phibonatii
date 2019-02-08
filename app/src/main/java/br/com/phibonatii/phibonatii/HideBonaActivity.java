@@ -8,9 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
@@ -25,37 +23,30 @@ import android.widget.Toast;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
-import net.gotev.uploadservice.MultipartUploadRequest;
-import net.gotev.uploadservice.UploadNotificationConfig;
-
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
-import java.util.UUID;
+import java.util.List;
 
 public class HideBonaActivity extends AppCompatActivity {
 
     private static final String UPLOAD_URL = "http://192.168.94.1/AndroidImageUpload/upload.php";
     private static final int CODIGO_IMAGEM = 345;
-    private static final int CAMERA_REQUEST_CODE = 1888;
-    private static final int CAMERA_PERMISSION_CODE = 100;
+    private static final int LOCATION_PERMISSION_CODE = 101;
+    private static final int CAMERA_PERMISSION_CODE = 103;
+    private static final int CAMERA_REQUEST_CODE = 203;
 
     private String token;
 
     public EditText fieldDenomination;
     public EditText fieldSpecification;
     public EditText fieldHowMuch;
+    public TextView textLocate;
 
     private String photo, lat, lng;
+
     public String denomination;
     public String specification;
     public String howMuch;
+    public String locate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,10 +57,15 @@ public class HideBonaActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 456);
         }
 */
-        FragmentManager fragMan = getSupportFragmentManager();
-        FragmentTransaction fragTrans = fragMan.beginTransaction();
-        fragTrans.replace(R.id.frame_localization, new LocalizationFragment());
-        fragTrans.commit();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
+        } else {
+            Toast.makeText(this, "LOCATION - permissão já concedida", Toast.LENGTH_LONG).show();
+            FragmentManager fragMan = getSupportFragmentManager();
+            FragmentTransaction fragTrans = fragMan.beginTransaction();
+            fragTrans.replace(R.id.frame_localization, new LocalizationFragment());
+            fragTrans.commit();
+        }
 
         token = getIntent().getStringExtra("token");
     }
@@ -204,6 +200,7 @@ public class HideBonaActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         } else {
+            Toast.makeText(this, "CAMERA - permissão já concedida", Toast.LENGTH_LONG).show();
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
         }
@@ -221,11 +218,22 @@ public class HideBonaActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "permissão concedida", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "CAMERA - permissão concedida agora", Toast.LENGTH_LONG).show();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
             } else {
-                Toast.makeText(this, "permissão negada", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "CAMERA - permissão negada", Toast.LENGTH_LONG).show();
+            }
+        }
+        if (requestCode == LOCATION_PERMISSION_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(this, "LOCATION - permissão concedida agora", Toast.LENGTH_LONG).show();
+                FragmentManager fragMan = getSupportFragmentManager();
+                FragmentTransaction fragTrans = fragMan.beginTransaction();
+                fragTrans.replace(R.id.frame_localization, new LocalizationFragment());
+                fragTrans.commit();
+            } else {
+                Toast.makeText(this, "LOCATION - permissão negada", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -280,6 +288,7 @@ public class HideBonaActivity extends AppCompatActivity {
         fieldDenomination = (EditText) this.findViewById(R.id.edit_denomination);
         fieldSpecification = (EditText) this.findViewById(R.id.edit_specification);
         fieldHowMuch = (EditText) this.findViewById(R.id.edit_howmuch);
+        textLocate = (TextView) this.findViewById(R.id.text_locate);
 
         fieldDenomination.setBackgroundColor(Color.parseColor("#ffffff"));
         fieldSpecification.setBackgroundColor(Color.parseColor("#ffffff"));
@@ -290,14 +299,19 @@ public class HideBonaActivity extends AppCompatActivity {
         denomination = fieldDenomination.getText().toString();
         specification = fieldSpecification.getText().toString();
         howMuch = fieldHowMuch.getText().toString();
+        locate = textLocate.getText().toString();
+
+        int firstIndexLat = locate.indexOf("Latitude: ");
+        int firstIndexLng = locate.indexOf("Longitude: ");
+
+        lat = locate.substring(firstIndexLat+10, firstIndexLng-1);
+        lng = locate.substring(firstIndexLng+11);
     }
     private boolean toValidate() {
         getValues();
         if (photo == null) {
             Toast.makeText(this, "Falta foto", Toast.LENGTH_LONG).show();
         } else {
-            lat = "1";
-            lng = "2";
             if ((lat == null) || (lng == null)) {
                 Toast.makeText(this, "Falta localização", Toast.LENGTH_LONG).show();
             } else {
@@ -315,12 +329,37 @@ public class HideBonaActivity extends AppCompatActivity {
 }
 
 class ResponseHideBona implements IResponseHideBona {
-    public void onPostExecute(Context context, String serverError) {
+    public void onPostExecute(Context context, String serverError, List<String> denominationErros, List<String> specificationErros, List<String> howMuchErros) {
         String msgErros = "";
         HideBonaActivity app = (HideBonaActivity) context;
 
         if (serverError != "") {
             msgErros = "Erro no servidor:" + "\t" + serverError + "\t";
+        } else {
+            if (!denominationErros.isEmpty()) {
+                msgErros += "Denomination: ";
+                for (String s : denominationErros) {
+                    msgErros = msgErros + s + "\t";
+                }
+                app.fieldDenomination.setBackgroundColor(Color.parseColor("#ff0000"));
+            }
+            if (!specificationErros.isEmpty()) {
+                msgErros += "Denomination: ";
+                for (String s : specificationErros) {
+                    msgErros = msgErros + s + "\t";
+                }
+                app.fieldSpecification.setBackgroundColor(Color.parseColor("#ff0000"));
+            }
+            if (!howMuchErros.isEmpty()) {
+                msgErros += "Denomination: ";
+                for (String s : howMuchErros) {
+                    msgErros = msgErros + s + "\t";
+                }
+                app.fieldHowMuch.setBackgroundColor(Color.parseColor("#ff0000"));
+            }
+            if (msgErros != "") {
+                msgErros = "Problema de preenchimento das informações:" + "\t" + msgErros;
+            }
         }
 
         if (msgErros != "") {
