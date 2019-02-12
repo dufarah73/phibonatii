@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -16,6 +17,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +50,8 @@ public class HideBonaActivity extends AppCompatActivity {
     public String howMuch;
     public String locate;
 
+    private LocalizationFragment.LocationCallback callbackLocal;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +61,22 @@ public class HideBonaActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 456);
         }
 */
+        callbackLocal = new LocalizationFragment.LocationCallback() {
+            @Override public void onNewLocationAvailable(Activity activity, Location location) {
+                TextView txt = (TextView) activity.findViewById(R.id.text_locate);
+                txt.setText("Localização: Latitude: " + String.valueOf(location.getLatitude()) + " Longitude: " + String.valueOf(location.getLongitude()));
+            }
+        };
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
         } else {
             Toast.makeText(this, "LOCATION - permissão já concedida", Toast.LENGTH_LONG).show();
             FragmentManager fragMan = getSupportFragmentManager();
             FragmentTransaction fragTrans = fragMan.beginTransaction();
-            fragTrans.replace(R.id.frame_localization, new LocalizationFragment());
+            LocalizationFragment fragLocal = new LocalizationFragment();
+            fragLocal.SetLocalizationFragment(this, callbackLocal);
+            fragTrans.replace(R.id.frame_localization, fragLocal);
             fragTrans.commit();
         }
 
@@ -230,7 +243,9 @@ public class HideBonaActivity extends AppCompatActivity {
                 Toast.makeText(this, "LOCATION - permissão concedida agora", Toast.LENGTH_LONG).show();
                 FragmentManager fragMan = getSupportFragmentManager();
                 FragmentTransaction fragTrans = fragMan.beginTransaction();
-                fragTrans.replace(R.id.frame_localization, new LocalizationFragment());
+                LocalizationFragment fragLocal = new LocalizationFragment();
+                fragLocal.SetLocalizationFragment(this, callbackLocal);
+                fragTrans.replace(R.id.frame_localization, fragLocal);
                 fragTrans.commit();
             } else {
                 Toast.makeText(this, "LOCATION - permissão negada", Toast.LENGTH_LONG).show();
@@ -322,6 +337,8 @@ public class HideBonaActivity extends AppCompatActivity {
     }
     public void hideBona(View view) {
         if (toValidate()) {
+            Button button = (Button) this.findViewById(R.id.button_hidebona);
+            button.setEnabled(false);
             WebClient webClient = new WebClient(this);
             webClient.hideBona(token, denomination, specification, lat, lng, photo, howMuch, new ResponseHideBona());
         }
@@ -364,6 +381,8 @@ class ResponseHideBona implements IResponseHideBona {
 
         if (msgErros != "") {
             Toast.makeText(context, msgErros, Toast.LENGTH_LONG).show();
+            Button button = (Button) app.findViewById(R.id.button_hidebona);
+            button.setEnabled(true);
         } else {
             app.finish();
         }

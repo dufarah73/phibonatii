@@ -235,12 +235,14 @@ public class WebClient {
         new WebClientTask(this, "mybonas", JSONObjectToString(jsonObject)).execute();
     }
 
-    public void radar(String token, Long groupId, IResponseRadar responseRadar) {
+    public void radar(String token, Long groupId, double lat, double lng, IResponseRadar responseRadar) {
         this.responseRadar = responseRadar;
         JSONObject jsonObject = new JSONObject();
         try {
             jsonObject.put("token", token);
             jsonObject.put("groupId", groupId);
+            jsonObject.put("lat", String.valueOf(lat));
+            jsonObject.put("lng", String.valueOf(lng));
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -3,6 +3,7 @@ package br.com.phibonatii.phibonatii;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
@@ -29,11 +30,13 @@ import br.com.phibonatii.phibonatii.model.Bona;
 import br.com.phibonatii.phibonatii.model.Group;
 import br.com.phibonatii.phibonatii.model.Radar;
 import br.com.phibonatii.phibonatii.model.Ranking;
+import br.com.phibonatii.phibonatii.model.SingleLocalizator;
 
 public class MainActivity extends AppCompatActivity {
 
     private String token;
     private List<Group> groups;
+    private Long groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +58,14 @@ public class MainActivity extends AppCompatActivity {
                 int mySpinnerPosition = position;
                 TabLayout tb = (TabLayout) findViewById(R.id.tabs);
                 TabLayout.Tab tab = tb.getTabAt(tb.getSelectedTabPosition());
-                Long idGroup = (Long) tab.getTag();
+                groupId = (Long) tab.getTag();
                 if (mySpinnerPosition == 0) {
-                    displayListRadar(idGroup);
+                    displayListRadar();
                 } else
                 if (mySpinnerPosition == 1) {
-                    displayListRanking(idGroup);
+                    displayListRanking();
                 } else {
-                    displayListMyBonas(idGroup);
+                    displayListMyBonas();
                 };
             }
 
@@ -77,14 +80,14 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 Spinner sp = (Spinner) findViewById(R.id.spinner);
                 int mySpinnerPosition = sp.getSelectedItemPosition();
-                Long groupId = (Long) tab.getTag();
+                groupId = (Long) tab.getTag();
                 if (mySpinnerPosition == 0) {
-                    displayListRadar(groupId);
+                    displayListRadar();
                 } else
                 if (mySpinnerPosition == 1) {
-                    displayListRanking(groupId);
+                    displayListRanking();
                 } else {
-                    displayListMyBonas(groupId);
+                    displayListMyBonas();
                 };
             }
 
@@ -123,18 +126,24 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    private void displayListMyBonas(Long groupId) {
+    private void displayListMyBonas() {
         WebClient webClient = new WebClient(this);
         webClient.myBonas(token, groupId, new ResponseMyBonas());
     }
 
-    private void displayListRadar(Long groupId) {
-        WebClient webClient = new WebClient(this);
-        // pegar lat lng
-        webClient.radar(token, groupId, new ResponseRadar());
+    private void displayListRadar() {
+        SingleLocalizator.requestSingleUpdate(this,
+                new SingleLocalizator.LocationCallback() {
+                    @Override public void onNewLocationAvailable(Context context, Location location) {
+                        MainActivity app = (MainActivity) context;
+//                        Toast.makeText(context, "GroupID:" + String.valueOf(app.groupId) + " Latitude:" + String.valueOf(location.getLatitude()) +" Longitude:" + String.valueOf(location.getLongitude()), Toast.LENGTH_LONG).show();
+                        WebClient webClient = new WebClient(context);
+                        webClient.radar(app.token, app.groupId, location.getLatitude(), location.getLongitude(), new ResponseRadar());
+                    }
+                });
     }
 
-    private void displayListRanking(Long groupId) {
+    private void displayListRanking() {
         WebClient webClient = new WebClient(this);
         webClient.ranking(token, groupId, new ResponseRanking());
     }
