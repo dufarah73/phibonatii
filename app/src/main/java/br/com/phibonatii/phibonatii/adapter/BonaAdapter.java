@@ -45,10 +45,14 @@ public class BonaAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null) {
             view = inflater.inflate(R.layout.list_bona_item, parent, false);
-        }
+        };
 
+        String h = "";
+        if (obj.getHidden()) {
+            h = "H ";
+        };
         TextView campoNome = (TextView) view.findViewById(R.id.bona_name);
-        campoNome.setText(obj.getName());
+        campoNome.setText(h+obj.getName());
 
         TextView campoDescricao = (TextView) view.findViewById(R.id.bona_description);
         campoDescricao.setText(obj.getDescription());

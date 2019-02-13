@@ -45,10 +45,14 @@ public class RankingAdapter extends BaseAdapter {
         View view = convertView;
         if (view == null) {
             view = inflater.inflate(R.layout.list_ranking_item, parent, false);
-        }
+        };
 
+        String m = "";
+        if (obj.getMe()) {
+            m = "*** ";
+        };
         TextView campoNome = (TextView) view.findViewById(R.id.ranking_name);
-        campoNome.setText(obj.getName());
+        campoNome.setText(m+obj.getName());
 
         TextView campoDescricao = (TextView) view.findViewById(R.id.ranking_description);
         campoDescricao.setText(obj.getDescription());

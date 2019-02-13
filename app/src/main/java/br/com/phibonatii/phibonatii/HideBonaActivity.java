@@ -64,7 +64,9 @@ public class HideBonaActivity extends AppCompatActivity {
         callbackLocal = new LocalizationFragment.LocationCallback() {
             @Override public void onNewLocationAvailable(Activity activity, Location location) {
                 TextView txt = (TextView) activity.findViewById(R.id.text_locate);
-                txt.setText("Localização: Latitude: " + String.valueOf(location.getLatitude()) + " Longitude: " + String.valueOf(location.getLongitude()));
+                lat = String.valueOf(location.getLatitude());
+                lng = String.valueOf(location.getLongitude());
+                txt.setText("Localização: Latitude: " + lat + " Longitude: " + lng);
             }
         };
 
@@ -256,9 +258,6 @@ public class HideBonaActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-            ImageView imageView = (ImageView) this.findViewById(R.id.formulario_foto);
-            TextView textView = (TextView) this.findViewById(R.id.edit_specification);
-
             Bitmap bitmap1 = (Bitmap) data.getExtras().get("data");
 /*
             int byteSize = bitmap1.getRowBytes() * bitmap1.getHeight();
@@ -275,10 +274,9 @@ public class HideBonaActivity extends AppCompatActivity {
 
             photo = Base64.encodeToString(byteArray2, Base64.DEFAULT);
 
+            ImageView imageView = (ImageView) this.findViewById(R.id.formulario_foto);
             imageView.setImageBitmap(bitmap2);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-
-            textView.setText(String.valueOf(photo.length()));
         }
 /*
         if (resultCode == Activity.RESULT_OK) {
@@ -315,12 +313,6 @@ public class HideBonaActivity extends AppCompatActivity {
         specification = fieldSpecification.getText().toString();
         howMuch = fieldHowMuch.getText().toString();
         locate = textLocate.getText().toString();
-
-        int firstIndexLat = locate.indexOf("Latitude: ");
-        int firstIndexLng = locate.indexOf("Longitude: ");
-
-        lat = locate.substring(firstIndexLat+10, firstIndexLng-1);
-        lng = locate.substring(firstIndexLng+11);
     }
     private boolean toValidate() {
         getValues();

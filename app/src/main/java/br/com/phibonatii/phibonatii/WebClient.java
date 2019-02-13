@@ -325,22 +325,22 @@ public class WebClient {
 
             arr = jsonObject.optJSONArray("Bonas");
             if (arr != null) {
-                for (int i = 2; i < arr.length(); i += 3) {
-                    bonas.add(new Bona(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
+                for (int i = 3; i < arr.length(); i += 4) {
+                    bonas.add(new Bona(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1), (arr.optString(i) == "1")));
                 }
             }
 
             arr = jsonObject.optJSONArray("Radar");
             if (arr != null) {
-                for (int i = 2; i < arr.length(); i += 3) {
-                    radar.add(new Radar(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
+                for (int i = 3; i < arr.length(); i += 4) {
+                    radar.add(new Radar(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1), Long.parseLong(arr.optString(i))));
                 }
             }
 
             arr = jsonObject.optJSONArray("Ranking");
             if (arr != null) {
-                for (int i = 2; i < arr.length(); i += 3) {
-                    ranking.add(new Ranking(arr.optLong(i-2), arr.optString(i-1), arr.optString(i)));
+                for (int i = 3; i < arr.length(); i += 4) {
+                    ranking.add(new Ranking(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1), (arr.optString(i) == "1")));
                 }
             }
 

@@ -6,11 +6,13 @@ public class Radar implements Serializable {
     private Long id;
     private String name;
     private String description;
+    private Long range;
 
-    public Radar(Long id, String name, String description) {
+    public Radar(Long id, String name, String description, Long range) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.range = range;
     }
 
     public Long getId() {
@@ -35,5 +37,13 @@ public class Radar implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Long getRange() {
+        return range;
+    }
+
+    public void setRange(Long range) {
+        this.range = range;
     }
 }

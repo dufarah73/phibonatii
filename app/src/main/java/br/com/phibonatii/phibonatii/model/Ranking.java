@@ -6,11 +6,13 @@ public class Ranking implements Serializable {
     private Long id;
     private String name;
     private String description;
+    private Boolean me;
 
-    public Ranking(Long id, String name, String description) {
+    public Ranking(Long id, String name, String description, Boolean me) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.me = me;
     }
 
     public Long getId() {
@@ -35,5 +37,13 @@ public class Ranking implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getMe() {
+        return me;
+    }
+
+    public void setMe(Boolean me) {
+        this.me = me;
     }
 }
