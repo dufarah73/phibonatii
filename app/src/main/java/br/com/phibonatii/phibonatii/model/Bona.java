@@ -4,15 +4,21 @@ import java.io.Serializable;
 
 public class Bona implements Serializable {
     private Long id;
-    private String name;
     private String description;
-    private Boolean hidden;
+    private String specification;
+    private Long howMuch;
+    private Boolean stillHidden;
+    private Boolean foundNotConfirmed;
+    private Long distanceFromMe;
 
-    public Bona(Long id, String name, String description, Boolean hidden) {
+    public Bona(Long id, String description, String specification) {
         this.id = id;
-        this.name = name;
         this.description = description;
-        this.hidden = hidden;
+        this.specification = specification;
+        howMuch = Long.valueOf(0);
+        stillHidden = Boolean.FALSE;
+        foundNotConfirmed = Boolean.FALSE;
+        distanceFromMe = Long.valueOf(0);
     }
 
     public Long getId() {
@@ -23,14 +29,6 @@ public class Bona implements Serializable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -39,11 +37,41 @@ public class Bona implements Serializable {
         this.description = description;
     }
 
-    public Boolean getHidden() {
-        return hidden;
+    public String getSpecification() {
+        return specification;
     }
 
-    public void setHidden(Boolean hidden) {
-        this.hidden = hidden;
+    public void setSpecification(String specification) {
+        this.specification = specification;
+    }
+
+    public Long getHowMuch() {
+        return howMuch;
+    }
+
+    public void setHowMuch(Long howMuch) {
+        this.howMuch = howMuch;
+    }
+
+    public Boolean getStillHidden() {
+        return stillHidden;
+    }
+
+    public void setStillHidden(Boolean stillHidden) {
+        this.stillHidden = stillHidden;
+    }
+
+    public Boolean getFoundNotConfirmed() {
+        return foundNotConfirmed;
+    }
+
+    public void setFoundNotConfirmed(Boolean foundNotConfirmed) { this.foundNotConfirmed = foundNotConfirmed; }
+
+    public Long getDistanceFromMe() {
+        return distanceFromMe;
+    }
+
+    public void setDistanceFromMe(Long distanceFromMe) {
+        this.distanceFromMe = distanceFromMe;
     }
 }

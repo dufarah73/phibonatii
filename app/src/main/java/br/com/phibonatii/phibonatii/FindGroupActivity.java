@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import br.com.phibonatii.phibonatii.adapter.GroupAdapter;
+import br.com.phibonatii.phibonatii.adapter.GroupsAdapter;
 import br.com.phibonatii.phibonatii.model.Group;
 
 public class FindGroupActivity extends AppCompatActivity {
@@ -67,7 +67,7 @@ class ResponseFindGroup implements IResponseFindGroup {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
             Spinner spinner = (Spinner) app.findViewById(R.id.spinner_groups);
-            spinner.setAdapter(new GroupAdapter(app, groups));
+            spinner.setAdapter(new GroupsAdapter(app, groups));
         }
     }
 }

@@ -11,8 +11,7 @@ import java.util.ArrayList;
 
 import br.com.phibonatii.phibonatii.model.Group;
 import br.com.phibonatii.phibonatii.model.Bona;
-import br.com.phibonatii.phibonatii.model.Radar;
-import br.com.phibonatii.phibonatii.model.Ranking;
+import br.com.phibonatii.phibonatii.model.Phi;
 
 interface IResponseLogin {
     public void onPostExecute(Context context, String token, List<Group> groups, String serverError);
@@ -55,11 +54,11 @@ interface IResponseMyBonas {
 }
 
 interface IResponseRadar {
-    public void onPostExecute(Context context, List<Radar> radar, String serverError);
+    public void onPostExecute(Context context, List<Bona> bonas, String serverError);
 }
 
 interface IResponseRanking {
-    public void onPostExecute(Context context, List<Ranking> ranking, String serverError);
+    public void onPostExecute(Context context, List<Phi> phis, String serverError);
 }
 
 interface IResponseParams {
@@ -287,8 +286,7 @@ public class WebClient {
         String token = "";
         List<Group> groups = new ArrayList<Group>();
         List<Bona> bonas = new ArrayList<Bona>();
-        List<Radar> radar = new ArrayList<Radar>();
-        List<Ranking> ranking = new ArrayList<Ranking>();
+        List<Phi> phis = new ArrayList<Phi>();
         String passAsking = "";
 
         String error = "";
@@ -323,24 +321,27 @@ public class WebClient {
                 }
             }
 
-            arr = jsonObject.optJSONArray("Bonas");
+            arr = jsonObject.optJSONArray("MyBonas");
             if (arr != null) {
                 for (int i = 3; i < arr.length(); i += 4) {
-                    bonas.add(new Bona(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1), (arr.optString(i) == "1")));
+                    bonas.add((new Bona(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1))));
+                    bonas.get(bonas.size()-1).setStillHidden(Boolean.valueOf(arr.optString(i)));
                 }
             }
 
             arr = jsonObject.optJSONArray("Radar");
             if (arr != null) {
                 for (int i = 3; i < arr.length(); i += 4) {
-                    radar.add(new Radar(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1), Long.parseLong(arr.optString(i))));
+                    bonas.add((new Bona(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1))));
+                    bonas.get(bonas.size()-1).setDistanceFromMe(Long.valueOf(arr.optString(i)));
                 }
             }
 
             arr = jsonObject.optJSONArray("Ranking");
             if (arr != null) {
                 for (int i = 3; i < arr.length(); i += 4) {
-                    ranking.add(new Ranking(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1), (arr.optString(i) == "1")));
+                    phis.add((new Phi(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1))));
+                    phis.get(bonas.size()-1).setMe(Boolean.valueOf(arr.optString(i)));
                 }
             }
 
@@ -456,10 +457,10 @@ public class WebClient {
             responseMyBonas.onPostExecute(context, bonas, error);
         }
         if (responseRadar != null) {
-            responseRadar.onPostExecute(context, radar, error);
+            responseRadar.onPostExecute(context, bonas, error);
         }
         if (responseRanking != null) {
-            responseRanking.onPostExecute(context, ranking, error);
+            responseRanking.onPostExecute(context, phis, error);
         }
         if (responseParams != null) {
             responseParams.onPostExecute(context, groups, error, fullNameErros, dateBornErros, passAskingErros, passAnswerErros);

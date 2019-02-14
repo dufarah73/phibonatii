@@ -1,6 +1,7 @@
 package br.com.phibonatii.phibonatii.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.phibonatii.phibonatii.R;
-import br.com.phibonatii.phibonatii.model.Group;
+import br.com.phibonatii.phibonatii.model.Bona;
 
-public class GroupAdapter extends BaseAdapter {
-    private final List<Group> objects;
+public class MyBonasAdapter extends BaseAdapter {
+    private final List<Bona> objects;
     private final Context context;
 
-    public GroupAdapter(Context context, List<Group> objects) {
+    public MyBonasAdapter(Context context, List<Bona> objects) {
         this.context = context;
         this.objects = objects;
     }
@@ -38,21 +39,24 @@ public class GroupAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Group obj = (Group) getItem(position);
+        Bona obj = (Bona) getItem(position);
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = convertView;
         if (view == null) {
-            view = inflater.inflate(R.layout.list_group_item, parent, false);
+            view = inflater.inflate(R.layout.list_bona_item, parent, false);
         }
 
-        TextView campoNome = (TextView) view.findViewById(R.id.group_shortname);
-        campoNome.setText(obj.getShortName());
-        campoNome.setTag(obj.getId());
+        if (obj.getStillHidden()) {
+            view.setBackgroundColor(Color.parseColor("#D0D7FF"));
+        }
 
-        TextView campoDescricao = (TextView) view.findViewById(R.id.group_longname);
-        campoDescricao.setText(obj.getLongName());
+        TextView campoNome = (TextView) view.findViewById(R.id.bona_name);
+        campoNome.setText(obj.getDescription());
+
+        TextView campoDescricao = (TextView) view.findViewById(R.id.bona_description);
+        campoDescricao.setText(obj.getSpecification());
 
         return view;
     }

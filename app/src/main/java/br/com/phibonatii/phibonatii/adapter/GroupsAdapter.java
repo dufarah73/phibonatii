@@ -10,13 +10,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import br.com.phibonatii.phibonatii.R;
-import br.com.phibonatii.phibonatii.model.Bona;
+import br.com.phibonatii.phibonatii.model.Group;
 
-public class BonaAdapter extends BaseAdapter {
-    private final List<Bona> objects;
+public class GroupsAdapter extends BaseAdapter {
+    private final List<Group> objects;
     private final Context context;
 
-    public BonaAdapter(Context context, List<Bona> objects) {
+    public GroupsAdapter(Context context, List<Group> objects) {
         this.context = context;
         this.objects = objects;
     }
@@ -38,24 +38,21 @@ public class BonaAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Bona obj = (Bona) getItem(position);
+        Group obj = (Group) getItem(position);
 
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View view = convertView;
         if (view == null) {
-            view = inflater.inflate(R.layout.list_bona_item, parent, false);
-        };
+            view = inflater.inflate(R.layout.list_group_item, parent, false);
+        }
 
-        String h = "";
-        if (obj.getHidden()) {
-            h = "H ";
-        };
-        TextView campoNome = (TextView) view.findViewById(R.id.bona_name);
-        campoNome.setText(h+obj.getName());
+        TextView campoNome = (TextView) view.findViewById(R.id.group_shortname);
+        campoNome.setText(obj.getShortName());
+        campoNome.setTag(obj.getId());
 
-        TextView campoDescricao = (TextView) view.findViewById(R.id.bona_description);
-        campoDescricao.setText(obj.getDescription());
+        TextView campoDescricao = (TextView) view.findViewById(R.id.group_longname);
+        campoDescricao.setText(obj.getLongName());
 
         return view;
     }

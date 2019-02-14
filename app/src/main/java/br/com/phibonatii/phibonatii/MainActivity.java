@@ -23,13 +23,12 @@ import android.widget.Toast;
 import java.util.List;
 import java.util.ArrayList;
 
-import br.com.phibonatii.phibonatii.adapter.BonaAdapter;
+import br.com.phibonatii.phibonatii.adapter.MyBonasAdapter;
 import br.com.phibonatii.phibonatii.adapter.RadarAdapter;
 import br.com.phibonatii.phibonatii.adapter.RankingAdapter;
 import br.com.phibonatii.phibonatii.model.Bona;
 import br.com.phibonatii.phibonatii.model.Group;
-import br.com.phibonatii.phibonatii.model.Radar;
-import br.com.phibonatii.phibonatii.model.Ranking;
+import br.com.phibonatii.phibonatii.model.Phi;
 import br.com.phibonatii.phibonatii.model.SingleLocalizator;
 
 public class MainActivity extends AppCompatActivity {
@@ -254,33 +253,33 @@ class ResponseMyBonas implements IResponseMyBonas {
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
-            objectList.setAdapter(new BonaAdapter(app, bonas));
+            objectList.setAdapter(new MyBonasAdapter(app, bonas));
         }
     }
 }
 
 class ResponseRadar implements IResponseRadar {
-    public void onPostExecute(Context context, List<Radar> radar, String serverError) {
+    public void onPostExecute(Context context, List<Bona> bonas, String serverError) {
         MainActivity app = (MainActivity) context;
         ListView objectList = (ListView) app.findViewById(R.id.listview);
 
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
-            objectList.setAdapter(new RadarAdapter(app, radar));
+            objectList.setAdapter(new RadarAdapter(app, bonas));
         }
     }
 }
 
 class ResponseRanking implements IResponseRanking {
-    public void onPostExecute(Context context, List<Ranking> ranking, String serverError) {
+    public void onPostExecute(Context context, List<Phi> phis, String serverError) {
         MainActivity app = (MainActivity) context;
         ListView objectList = (ListView) app.findViewById(R.id.listview);
 
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
-            objectList.setAdapter(new RankingAdapter(app, ranking));
+            objectList.setAdapter(new RankingAdapter(app, phis));
         }
     }
 }
