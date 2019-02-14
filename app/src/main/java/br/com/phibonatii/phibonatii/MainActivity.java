@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
+                onTabSelected(tab);
             }
         });
         TabLayout.Tab tab;
@@ -109,15 +110,14 @@ public class MainActivity extends AppCompatActivity {
         tab.setText("GLOBAL");
         tab.setTag(Long.valueOf(0));
         tabLayout.addTab(tab);
-/*
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+
+        ListView objectList = (ListView) this.findViewById(R.id.listview);
+        objectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(view.getContext(), String.valueOf(id), Toast.LENGTH_LONG).show();
             }
         });
-*/
     }
 
     @Override

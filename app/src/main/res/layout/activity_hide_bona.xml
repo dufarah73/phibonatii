@@ -20,19 +20,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/edit_denomination"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/hint_denomination"
-                    android:inputType="text" />
-
-            </android.support.design.widget.TextInputLayout>
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="225dp">
@@ -56,28 +43,16 @@
 
             </RelativeLayout>
 
-            <TextView
-                android:id="@+id/text_locate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textStyle="italic" />
-
-            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/frame_localization"
-                android:layout_width="match_parent"
-                android:layout_height="200dp" />
-
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edit_howmuch"
+                    android:id="@+id/edit_denomination"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/hint_howmuch"
-                    android:inputType="number" />
+                    android:hint="@string/hint_denomination"
+                    android:inputType="text" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -95,6 +70,20 @@
 
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edit_howmuch"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:hint="@string/hint_howmuch"
+                    android:inputType="number" />
+
+            </android.support.design.widget.TextInputLayout>
+
             <Button
                 android:id="@+id/button_hidebona"
                 android:layout_width="match_parent"
@@ -102,6 +91,13 @@
                 android:layout_marginTop="16dp"
                 android:onClick="hideBona"
                 android:text="@string/button_hide_bona" />
+
+            <FrameLayout
+                android:id="@+id/frame_localization"
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+            </FrameLayout>
 
         </LinearLayout>
     </ScrollView>

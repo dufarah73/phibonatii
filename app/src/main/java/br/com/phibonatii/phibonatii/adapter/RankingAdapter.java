@@ -49,7 +49,7 @@ public class RankingAdapter extends BaseAdapter {
         }
 
         if (obj.getMe()) {
-            view.setBackgroundColor(Color.parseColor("#D0D7FF"));
+            view.setBackgroundColor(Color.parseColor("#51E8FF"));
         }
 
         TextView campoNome = (TextView) view.findViewById(R.id.ranking_name);

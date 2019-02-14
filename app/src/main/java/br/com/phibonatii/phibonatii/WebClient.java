@@ -341,7 +341,7 @@ public class WebClient {
             if (arr != null) {
                 for (int i = 3; i < arr.length(); i += 4) {
                     phis.add((new Phi(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1))));
-                    phis.get(bonas.size()-1).setMe(Boolean.valueOf(arr.optString(i)));
+                    phis.get(phis.size()-1).setMe(Boolean.valueOf(arr.optString(i)));
                 }
             }
 

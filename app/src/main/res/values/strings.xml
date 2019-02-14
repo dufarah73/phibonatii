@@ -39,12 +39,12 @@
     <string name="hint_repeat_newpassword">Repetir nova senha</string>
     <string name="hint_passasking">Qual pergunta só você sabe a resposta?</string>
     <string name="hint_passanswer">Resposta à pergunta pessoal</string>
-    <string name="hint_shortname">Short Name (max 30 char)</string>
-    <string name="hint_longname">Long Name (max 900 char)</string>
-    <string name="hint_searchtext">Search Text</string>
-    <string name="hint_denomination">Denomination</string>
-    <string name="hint_specification">Specification</string>
-    <string name="hint_howmuch">How Much?</string>
+    <string name="hint_shortname">Nome curto (max 30 car)</string>
+    <string name="hint_longname">Nome longo (max 900 car)</string>
+    <string name="hint_searchtext">Texto de busca</string>
+    <string name="hint_denomination">Denominação</string>
+    <string name="hint_specification">Especificação</string>
+    <string name="hint_howmuch">Valor (Tii$)?</string>
 
     <string name="text_change_password">Se esqueceu sua senha:</string>
     <string name="text_join">Se sua conta ainda não está registrada:</string>

@@ -41,14 +41,12 @@ public class HideBonaActivity extends AppCompatActivity {
     public EditText fieldDenomination;
     public EditText fieldSpecification;
     public EditText fieldHowMuch;
-    public TextView textLocate;
 
     private String photo, lat, lng;
 
     public String denomination;
     public String specification;
     public String howMuch;
-    public String locate;
 
     private LocalizationFragment.LocationCallback callbackLocal;
 
@@ -63,17 +61,15 @@ public class HideBonaActivity extends AppCompatActivity {
 */
         callbackLocal = new LocalizationFragment.LocationCallback() {
             @Override public void onNewLocationAvailable(Activity activity, Location location) {
-                TextView txt = (TextView) activity.findViewById(R.id.text_locate);
                 lat = String.valueOf(location.getLatitude());
                 lng = String.valueOf(location.getLongitude());
-                txt.setText("Localização: Latitude: " + lat + " Longitude: " + lng);
             }
         };
 
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
         } else {
-            Toast.makeText(this, "LOCATION - permissão já concedida", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "LOCATION - permissão já concedida", Toast.LENGTH_LONG).show();
             FragmentManager fragMan = getSupportFragmentManager();
             FragmentTransaction fragTrans = fragMan.beginTransaction();
             LocalizationFragment fragLocal = new LocalizationFragment();
@@ -215,7 +211,7 @@ public class HideBonaActivity extends AppCompatActivity {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA ) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
         } else {
-            Toast.makeText(this, "CAMERA - permissão já concedida", Toast.LENGTH_LONG).show();
+//            Toast.makeText(this, "CAMERA - permissão já concedida", Toast.LENGTH_LONG).show();
             Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
         }
@@ -233,7 +229,7 @@ public class HideBonaActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "CAMERA - permissão concedida agora", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "CAMERA - permissão concedida agora", Toast.LENGTH_LONG).show();
                 Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, CAMERA_REQUEST_CODE);
             } else {
@@ -242,7 +238,7 @@ public class HideBonaActivity extends AppCompatActivity {
         }
         if (requestCode == LOCATION_PERMISSION_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "LOCATION - permissão concedida agora", Toast.LENGTH_LONG).show();
+//                Toast.makeText(this, "LOCATION - permissão concedida agora", Toast.LENGTH_LONG).show();
                 FragmentManager fragMan = getSupportFragmentManager();
                 FragmentTransaction fragTrans = fragMan.beginTransaction();
                 LocalizationFragment fragLocal = new LocalizationFragment();
@@ -301,18 +297,16 @@ public class HideBonaActivity extends AppCompatActivity {
         fieldDenomination = (EditText) this.findViewById(R.id.edit_denomination);
         fieldSpecification = (EditText) this.findViewById(R.id.edit_specification);
         fieldHowMuch = (EditText) this.findViewById(R.id.edit_howmuch);
-        textLocate = (TextView) this.findViewById(R.id.text_locate);
 
-        fieldDenomination.setBackgroundColor(Color.parseColor("#ffffff"));
-        fieldSpecification.setBackgroundColor(Color.parseColor("#ffffff"));
-        fieldHowMuch.setBackgroundColor(Color.parseColor("#ffffff"));
+        Utils.cleanErrorOnField(fieldDenomination);
+        Utils.cleanErrorOnField(fieldSpecification);
+        Utils.cleanErrorOnField(fieldHowMuch);
     }
     private void getValues() {
         getFields();
         denomination = fieldDenomination.getText().toString();
         specification = fieldSpecification.getText().toString();
         howMuch = fieldHowMuch.getText().toString();
-        locate = textLocate.getText().toString();
     }
     private boolean toValidate() {
         getValues();
@@ -345,27 +339,9 @@ class ResponseHideBona implements IResponseHideBona {
         if (serverError != "") {
             msgErros = "Erro no servidor:" + "\t" + serverError + "\t";
         } else {
-            if (!denominationErros.isEmpty()) {
-                msgErros += "Denomination: ";
-                for (String s : denominationErros) {
-                    msgErros = msgErros + s + "\t";
-                }
-                app.fieldDenomination.setBackgroundColor(Color.parseColor("#ff0000"));
-            }
-            if (!specificationErros.isEmpty()) {
-                msgErros += "Denomination: ";
-                for (String s : specificationErros) {
-                    msgErros = msgErros + s + "\t";
-                }
-                app.fieldSpecification.setBackgroundColor(Color.parseColor("#ff0000"));
-            }
-            if (!howMuchErros.isEmpty()) {
-                msgErros += "Denomination: ";
-                for (String s : howMuchErros) {
-                    msgErros = msgErros + s + "\t";
-                }
-                app.fieldHowMuch.setBackgroundColor(Color.parseColor("#ff0000"));
-            }
+            msgErros += Utils.putErrorOnField(denominationErros, app.fieldDenomination, app.getResources().getString(R.string.hint_denomination));
+            msgErros += Utils.putErrorOnField(specificationErros, app.fieldSpecification, app.getResources().getString(R.string.hint_specification));
+            msgErros += Utils.putErrorOnField(howMuchErros, app.fieldHowMuch, app.getResources().getString(R.string.hint_howmuch));
             if (msgErros != "") {
                 msgErros = "Problema de preenchimento das informações:" + "\t" + msgErros;
             }
