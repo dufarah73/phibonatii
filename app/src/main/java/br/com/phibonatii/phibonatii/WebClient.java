@@ -49,6 +49,10 @@ interface IResponseHideBona {
     public void onPostExecute(Context context, String serverError, List<String> denominationErros, List<String> specificationErros, List<String> howMuchErros);
 }
 
+interface IResponseViewBona {
+    public void onPostExecute(Context context, Bona bona, String serverError);
+}
+
 interface IResponseMyBonas {
     public void onPostExecute(Context context, List<Bona> bonas, String serverError);
 }
@@ -77,6 +81,7 @@ public class WebClient {
     private IResponseMeetGroup responseMeetGroup;
     private IResponseLeaveGroup responseLeaveGroup;
     private IResponseHideBona responseHideBona;
+    private IResponseViewBona responseViewBona;
     private IResponseMyBonas responseMyBonas;
     private IResponseRadar responseRadar;
     private IResponseRanking responseRanking;
@@ -222,6 +227,18 @@ public class WebClient {
         new WebClientTask(this, "hidebona", JSONObjectToString(jsonObject)).execute();
     }
 
+    public void viewBona(String token, Long bonaId, IResponseViewBona responseViewBona) {
+        this.responseViewBona = responseViewBona;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("bonaId", bonaId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "viewbona", JSONObjectToString(jsonObject)).execute();
+    }
+
     public void myBonas(String token, Long groupId, IResponseMyBonas responseMyBonas) {
         this.responseMyBonas = responseMyBonas;
         JSONObject jsonObject = new JSONObject();
@@ -284,6 +301,7 @@ public class WebClient {
         JSONArray arr;
 
         String token = "";
+        Bona bona = null;
         List<Group> groups = new ArrayList<Group>();
         List<Bona> bonas = new ArrayList<Bona>();
         List<Phi> phis = new ArrayList<Phi>();
@@ -313,6 +331,13 @@ public class WebClient {
 
         if (jsonObject != null) {
             token = jsonObject.optString("Token");
+
+            arr = jsonObject.optJSONArray("Bona");
+            if (arr != null) {
+                bona = new Bona(arr.optLong(0), arr.optString(1), "");
+                bona.setHowMuch(Long.valueOf(arr.optString(2)));
+                bona.setPhoto(arr.optString(3));
+            }
 
             arr = jsonObject.optJSONArray("Groups");
             if (arr != null) {
@@ -452,6 +477,9 @@ public class WebClient {
         }
         if (responseHideBona != null) {
             responseHideBona.onPostExecute(context, error, denominationErros, specificationErros, howMuchErros);
+        }
+        if (responseViewBona != null) {
+            responseViewBona.onPostExecute(context, bona, error);
         }
         if (responseMyBonas != null) {
             responseMyBonas.onPostExecute(context, bonas, error);

@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView campoNome = (TextView) view.findViewById(R.id.ranking_name);
                 if (campoNome == null) {
-                    Toast.makeText(view.getContext(), String.valueOf(id), Toast.LENGTH_LONG).show();
+                    viewBona(Long.valueOf(id));
                 }
             }
         });
@@ -165,10 +165,10 @@ public class MainActivity extends AppCompatActivity {
     public void leaveGroup() {
         TabLayout tb = (TabLayout) findViewById(R.id.tabs);
         TabLayout.Tab tab = tb.getTabAt(tb.getSelectedTabPosition());
-        Long idGroup = (Long) tab.getTag();
+        Long groupId = (Long) tab.getTag();
 
         WebClient webClient = new WebClient(this);
-        webClient.leaveGroup(token, idGroup, new ResponseLeaveGroup());
+        webClient.leaveGroup(token, groupId, new ResponseLeaveGroup());
     }
 
     public void changePassword() {
@@ -180,6 +180,13 @@ public class MainActivity extends AppCompatActivity {
     public void hideBona(View view) {
         Intent intent = new Intent(this, HideBonaActivity.class);
         intent.putExtra("token", token);
+        startActivity(intent);
+    }
+
+    public void viewBona(Long bonaId) {
+        Intent intent = new Intent(this, ViewBonaActivity.class);
+        intent.putExtra("token", token);
+        intent.putExtra("bonaId", bonaId);
         startActivity(intent);
     }
 
