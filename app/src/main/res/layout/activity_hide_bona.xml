@@ -25,14 +25,13 @@
                 android:layout_height="225dp">
 
                 <ImageView
-                    android:id="@+id/formulario_foto"
+                    android:id="@+id/image_photo"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:background="?attr/colorButtonNormal"
                     android:src="@android:drawable/ic_menu_crop" />
 
                 <Button
-                    android:id="@+id/formulario_botao_foto"
                     android:layout_width="56dp"
                     android:layout_height="56dp"
                     android:layout_alignParentRight="true"

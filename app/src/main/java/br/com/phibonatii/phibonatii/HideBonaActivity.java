@@ -270,7 +270,7 @@ public class HideBonaActivity extends AppCompatActivity {
 
             photo = Base64.encodeToString(byteArray2, Base64.DEFAULT);
 
-            ImageView imageView = (ImageView) this.findViewById(R.id.formulario_foto);
+            ImageView imageView = (ImageView) this.findViewById(R.id.image_photo);
             imageView.setImageBitmap(bitmap2);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         }

@@ -18,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"AROUND","RANKING","MY BONAS"}));
+        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, new String[]{"RADAR","RANKING","MEUS"}));
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -115,7 +116,10 @@ public class MainActivity extends AppCompatActivity {
         objectList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(view.getContext(), String.valueOf(id), Toast.LENGTH_LONG).show();
+                TextView campoNome = (TextView) view.findViewById(R.id.ranking_name);
+                if (campoNome == null) {
+                    Toast.makeText(view.getContext(), String.valueOf(id), Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -135,7 +139,6 @@ public class MainActivity extends AppCompatActivity {
                 new SingleLocalizator.LocationCallback() {
                     @Override public void onNewLocationAvailable(Context context, Location location) {
                         MainActivity app = (MainActivity) context;
-//                        Toast.makeText(context, "GroupID:" + String.valueOf(app.groupId) + " Latitude:" + String.valueOf(location.getLatitude()) +" Longitude:" + String.valueOf(location.getLongitude()), Toast.LENGTH_LONG).show();
                         WebClient webClient = new WebClient(context);
                         webClient.radar(app.token, app.groupId, location.getLatitude(), location.getLongitude(), new ResponseRadar());
                     }

@@ -10,5 +10,5 @@
                 android:right="10dp"/>
         </shape>
     </item>
-    <item android:drawable="@android:drawable/ic_menu_camera" />
+    <item android:drawable="@android:drawable/ic_menu_myplaces" />
 </layer-list>
