@@ -21,6 +21,7 @@
     <string name="button_find_group">Localizar Grupo</string>
     <string name="button_meet">Unir-se ao Grupo</string>
     <string name="button_hide_bona">Esconder Bona</string>
+    <string name="button_confirm_found_bona">Confirma Bona Encontrada</string>
     <string name="button_change_city">Alterar Cidade</string>
 
     <string name="menu_new_group">Iniciar Novo Grupo</string>

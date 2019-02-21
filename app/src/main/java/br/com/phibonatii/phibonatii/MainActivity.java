@@ -118,7 +118,15 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 TextView campoNome = (TextView) view.findViewById(R.id.ranking_name);
                 if (campoNome == null) {
-                    viewBona(Long.valueOf(id));
+                    TextView campoRange = (TextView) view.findViewById(R.id.radar_range);
+                    if (campoRange == null) {
+                        viewBona(Long.valueOf(id));
+                    } else {
+                        Long Range = (Long) campoRange.getTag();
+                        if (Range < 15) {
+                            viewBona(Long.valueOf(id));
+                        }
+                    }
                 }
             }
         });

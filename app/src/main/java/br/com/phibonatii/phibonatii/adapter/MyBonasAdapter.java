@@ -50,6 +50,8 @@ public class MyBonasAdapter extends BaseAdapter {
 
         if (obj.getStillHidden()) {
             view.setBackgroundColor(Color.parseColor("#D0D7FF"));
+            TextView campoEscondido = (TextView) view.findViewById(R.id.bona_hidden);
+            campoEscondido.setText("Escondido");
         }
 
         TextView campoNome = (TextView) view.findViewById(R.id.bona_name);

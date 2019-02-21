@@ -69,6 +69,7 @@ public class RadarAdapter extends BaseAdapter {
 
         TextView campoRange = (TextView) view.findViewById(R.id.radar_range);
         campoRange.setText(obj.getDistanceFromMe()+"m");
+        campoRange.setTag(obj.getDistanceFromMe());
 
         TextView campoDescricao = (TextView) view.findViewById(R.id.radar_description);
         campoDescricao.setText(obj.getSpecification());
