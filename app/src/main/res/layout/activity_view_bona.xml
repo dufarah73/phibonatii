@@ -21,7 +21,7 @@
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/image_photo"
+                android:id="@+id/image_photo1"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="?attr/colorButtonNormal"
@@ -44,12 +44,37 @@
                 android:text="TextView" />
 
             <Button
-                android:id="@+id/button_confirmation"
+                android:id="@+id/button_confirm"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:onClick="confirm"
                 android:text="@string/button_confirm_found_bona" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/image_photo2"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginTop="23dp"
+                    android:background="?attr/colorButtonNormal"
+                    android:baselineAlignBottom="false"
+                    android:src="@android:drawable/ic_menu_crop" />
+
+                <Button
+                    android:id="@+id/button_capture_photo"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="false"
+                    android:layout_marginRight="16dp"
+                    android:background="@drawable/background_camera"
+                    android:onClick="capturePhoto" />
+
+            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>

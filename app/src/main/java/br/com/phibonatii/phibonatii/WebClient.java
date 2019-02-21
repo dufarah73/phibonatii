@@ -49,6 +49,10 @@ interface IResponseHideBona {
     public void onPostExecute(Context context, String serverError, List<String> denominationErros, List<String> specificationErros, List<String> howMuchErros);
 }
 
+interface IResponseFindBona {
+    public void onPostExecute(Context context, String serverError);
+}
+
 interface IResponseViewBona {
     public void onPostExecute(Context context, Bona bona, String serverError);
 }
@@ -81,6 +85,7 @@ public class WebClient {
     private IResponseMeetGroup responseMeetGroup;
     private IResponseLeaveGroup responseLeaveGroup;
     private IResponseHideBona responseHideBona;
+    private IResponseFindBona responseFindBona;
     private IResponseViewBona responseViewBona;
     private IResponseMyBonas responseMyBonas;
     private IResponseRadar responseRadar;
@@ -227,6 +232,19 @@ public class WebClient {
         new WebClientTask(this, "hidebona", JSONObjectToString(jsonObject)).execute();
     }
 
+    public void findBona(String token, Long bonaId, String photo, IResponseFindBona responseFindBona) {
+        this.responseFindBona = responseFindBona;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            jsonObject.put("bonaId", bonaId);
+            jsonObject.put("photo", photo);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "findbona", JSONObjectToString(jsonObject)).execute();
+    }
+
     public void viewBona(String token, Long bonaId, IResponseViewBona responseViewBona) {
         this.responseViewBona = responseViewBona;
         JSONObject jsonObject = new JSONObject();
@@ -334,9 +352,10 @@ public class WebClient {
 
             arr = jsonObject.optJSONArray("Bona");
             if (arr != null) {
-                bona = new Bona(arr.optLong(0), arr.optString(1), "");
-                bona.setHowMuch(Long.valueOf(arr.optString(2)));
-                bona.setPhoto(arr.optString(3));
+                bona = new Bona(arr.optLong(0), arr.optString(1), arr.optString(2));
+                bona.setHowMuch(Long.valueOf(arr.optString(3)));
+                bona.setPhoto(arr.optString(4));
+                bona.setPhotoAfterFound(arr.optString(5));
             }
 
             arr = jsonObject.optJSONArray("Groups");
@@ -348,9 +367,10 @@ public class WebClient {
 
             arr = jsonObject.optJSONArray("MyBonas");
             if (arr != null) {
-                for (int i = 3; i < arr.length(); i += 4) {
-                    bonas.add((new Bona(arr.optLong(i-3), arr.optString(i-2), arr.optString(i-1))));
-                    bonas.get(bonas.size()-1).setStillHidden(Boolean.valueOf(arr.optString(i)));
+                for (int i = 4; i < arr.length(); i += 5) {
+                    bonas.add((new Bona(arr.optLong(i-4), arr.optString(i-3), arr.optString(i-2))));
+                    bonas.get(bonas.size()-1).setStillHidden(Boolean.valueOf(arr.optString(i-1)));
+                    bonas.get(bonas.size()-1).setFoundNotConfirmed(Boolean.valueOf(arr.optString(i)));
                 }
             }
 
@@ -477,6 +497,9 @@ public class WebClient {
         }
         if (responseHideBona != null) {
             responseHideBona.onPostExecute(context, error, denominationErros, specificationErros, howMuchErros);
+        }
+        if (responseFindBona != null) {
+            responseFindBona.onPostExecute(context, error);
         }
         if (responseViewBona != null) {
             responseViewBona.onPostExecute(context, bona, error);

@@ -8,6 +8,7 @@ public class Bona implements Serializable {
     private String specification;
     private Long howMuch;
     private String photo;
+    private String photoAfterFound;
     private Boolean stillHidden;
     private Boolean foundNotConfirmed;
     private Long distanceFromMe;
@@ -18,6 +19,7 @@ public class Bona implements Serializable {
         this.specification = specification;
         howMuch = Long.valueOf(0);
         photo = "";
+        photoAfterFound = "";
         stillHidden = Boolean.FALSE;
         foundNotConfirmed = Boolean.FALSE;
         distanceFromMe = Long.valueOf(0);
@@ -60,6 +62,10 @@ public class Bona implements Serializable {
     public void setPhoto(String photo) {
         this.photo = photo;
     }
+
+    public String getPhotoAfterFound() { return photoAfterFound; }
+
+    public void setPhotoAfterFound(String photoAfterFound) { this.photoAfterFound = photoAfterFound; }
 
     public Boolean getStillHidden() {
         return stillHidden;
