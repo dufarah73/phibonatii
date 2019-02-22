@@ -34,6 +34,8 @@ public class ViewBonaActivity extends AppCompatActivity {
     private Long bonaId;
     private String photo;
 
+    public Bona bona;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +57,14 @@ public class ViewBonaActivity extends AppCompatActivity {
         return false;
     }
     public void confirm(View view) {
-        if (this.findViewById(R.id.button_capture_photo).getVisibility() == View.INVISIBLE) {
-            this.finish();
+        if (this.bona.getMine()) {
+            if (this.bona.getFoundNotConfirmed()) {
+                this.findViewById(R.id.button_confirm).setEnabled(false);
+                WebClient webClient = new WebClient(this);
+                webClient.findBona(token, bonaId, "", new ResponseFindBona());
+            } else {
+                this.finish();
+            }
         } else if (toValidate()) {
             this.findViewById(R.id.button_confirm).setEnabled(false);
             WebClient webClient = new WebClient(this);
@@ -116,6 +124,8 @@ class ResponseViewBona implements IResponseViewBona {
         if (serverError != "") {
             Toast.makeText(context, serverError, Toast.LENGTH_LONG).show();
         } else {
+            app.bona = bona;
+
             TextView campoNome = (TextView) app.findViewById(R.id.text_description);
             campoNome.setText(bona.getDescription());
 
@@ -129,7 +139,7 @@ class ResponseViewBona implements IResponseViewBona {
             imageView.setImageBitmap(bitmap2);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            if (!bona.getPhotoAfterFound().isEmpty()) {
+            if (bona.getMine()) {
                 Button button = (Button) app.findViewById(R.id.button_capture_photo);
                 button.setVisibility(View.INVISIBLE);
 

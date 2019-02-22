@@ -356,6 +356,9 @@ public class WebClient {
                 bona.setHowMuch(Long.valueOf(arr.optString(3)));
                 bona.setPhoto(arr.optString(4));
                 bona.setPhotoAfterFound(arr.optString(5));
+                bona.setMine(Boolean.valueOf(arr.optString(6)));
+                bona.setStillHidden(Boolean.valueOf(arr.optString(7)));
+                bona.setFoundNotConfirmed(Boolean.valueOf(arr.optString(8)));
             }
 
             arr = jsonObject.optJSONArray("Groups");
