@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DoadoresActivity">
+    <item
+        android:id="@+id/doadores_menu_sair"
+        android:icon="@drawable/ic_action_regra"
+        app:showAsAction="ifRoom"
+        android:title="@string/menu_logout"
+        tools:ignore="MissingPrefix" />
+    <item
+        android:id="@+id/doadores_menu_certidao"
+        android:title="Entregar certidão"/>
+    <item
+        android:id="@+id/doadores_menu_remover"
+        android:title="Remover por falecimento"/>
+</menu>

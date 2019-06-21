@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">Flood</string>
+    <string name="app_name">Donation</string>
+
     <string name="activity_login_name">Identifique-se</string>
     <string name="activity_change_password_name">Troque sua Senha</string>
     <string name="activity_simple_change_password_name">Trocar Senha</string>
@@ -11,6 +12,10 @@
     <string name="activity_view_bona_name">Visualizar Bona</string>
     <string name="activity_change_city_name">Alterar Cidade</string>
     <string name="activity_params">Parâmetros</string>
+    <string name="activity_doadores">Doadores</string>
+    <string name="activity_doador">Cadastro de Doador de Órgãos</string>
+    <string name="activity_parente">Cadastro de Parente do Doador</string>
+    <string name="activity_foto">Certidão de Doador de Órgãos</string>
 
     <string name="button_login">Identifique-se</string>
     <string name="button_change_password">Troque sua Senha</string>
@@ -23,6 +28,11 @@
     <string name="button_hide_bona">Esconder Bona</string>
     <string name="button_confirm_found_bona">Confirma Bona Encontrado</string>
     <string name="button_change_city">Alterar Cidade</string>
+    <string name="button_indicar_parente">Indicar Parentes para Notificação</string>
+    <string name="button_gerar_declaracao">Gerar PDF da Declaração</string>
+    <string name="button_fotografar_declaracao">Fotografar Declaração Assinada</string>
+    <string name="button_indicar_mais_parentes">Confirmar e Indicar Mais Parentes</string>
+    <string name="button_indicar_so_esse_parente">Confirmar Esse e Não Indicar Outro</string>
 
     <string name="menu_new_group">Iniciar Novo Grupo</string>
     <string name="menu_find_group">Unir-se a um Grupo</string>
@@ -47,6 +57,15 @@
     <string name="hint_denomination">Denominação</string>
     <string name="hint_specification">Especificação</string>
     <string name="hint_howmuch">Valor (Tii$)</string>
+    <string name="hint_nome_doador">Nome</string>
+    <string name="hint_rg_doador">RG</string>
+    <string name="hint_cpf_doador">CPF</string>
+    <string name="hint_nascimento_doador">Nascimento</string>
+    <string name="hint_naturalidade_doador">Naturalidade</string>
+    <string name="hint_nome_parente">Nome</string>
+    <string name="hint_parentesco_parente">Grau de Parentesco</string>
+    <string name="hint_endereco_parente">Endereço</string>
+    <string name="hint_contato_parente">Contato</string>
 
     <string name="text_change_password">Se esqueceu sua senha:</string>
     <string name="text_join">Se sua conta ainda não está registrada:</string>

@@ -73,6 +73,18 @@ interface IResponseParams {
     public void onPostExecute(Context context, List<Group> groups, String serverError, List<String> fullNameErros, List<String> dateBornErros, List<String> passAskingErros, List<String> passAnswerErros);
 }
 
+interface IResponseDoadores {
+    public void onPostExecute(Context context, List<Phi> doadores, String serverError);
+}
+
+interface IResponseDoador {
+    public void onPostExecute(Context context, String doadorId, String qdtParentes, String serverError, List<String> nomeErros, List<String> rgErros, List<String> cpfErros, List<String> nascimentoErros, List<String> naturalidadeErros);
+}
+
+interface IResponseParente {
+    public void onPostExecute(Context context, String serverError, List<String> nomeErros, List<String> parentescoErros, List<String> enderecoErros, List<String> contatoErros);
+}
+
 public class WebClient {
 
     public Context context;
@@ -91,6 +103,9 @@ public class WebClient {
     private IResponseRadar responseRadar;
     private IResponseRanking responseRanking;
     private IResponseParams responseParams;
+    private IResponseDoadores responseDoadores;
+    private IResponseDoador responseDoador;
+    private IResponseParente responseParente;
 
     public String jsonReturned;
 
@@ -312,6 +327,59 @@ public class WebClient {
         new WebClientTask(this, "params", JSONObjectToString(jsonObject)).execute();
     }
 
+    public void doadores(String token, Boolean certificado, IResponseDoadores responseDoadores) {
+        this.responseDoadores = responseDoadores;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("token", token);
+            if (certificado) {
+                jsonObject.put("certificado", 1);
+
+            } else {
+                jsonObject.put("certificado", 0);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "doadores", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void doador(Boolean cadastrado, String nome, String rg, String cpf, String nascimento, String naturalidade, IResponseDoador responseDoador) {
+        this.responseDoador = responseDoador;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            if (cadastrado) {
+                jsonObject.put("cadastrado", 1);
+
+            } else {
+                jsonObject.put("cadastrado", 0);
+            }
+            jsonObject.put("nome", nome);
+            jsonObject.put("rg", rg);
+            jsonObject.put("cpf", cpf);
+            jsonObject.put("nascimento", nascimento);
+            jsonObject.put("naturalidade", naturalidade);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "doador", JSONObjectToString(jsonObject)).execute();
+    }
+
+    public void parente(String nome, String parentesco, String endereco, String contato, String doadorId, IResponseParente responseParente) {
+        this.responseParente = responseParente;
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("nome", nome);
+            jsonObject.put("parentesco", parentesco);
+            jsonObject.put("endereco", endereco);
+            jsonObject.put("contato", contato);
+            jsonObject.put("doadorId", doadorId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new WebClientTask(this, "parente", JSONObjectToString(jsonObject)).execute();
+    }
+
     public void onPostExecute(String resposta) {
         jsonReturned = resposta;
 
@@ -518,6 +586,15 @@ public class WebClient {
         }
         if (responseParams != null) {
             responseParams.onPostExecute(context, groups, error, fullNameErros, dateBornErros, passAskingErros, passAnswerErros);
+        }
+        if (responseDoadores != null) {
+            responseDoadores.onPostExecute(context, phis, error);
+        }
+        if (responseDoador != null) {
+            responseDoador.onPostExecute(context, token, passAsking, error, fullNameErros, passAskingErros, passAnswerErros, dateBornErros, longNameErros);
+        }
+        if (responseParente != null) {
+            responseParente.onPostExecute(context, error, fullNameErros, longNameErros, passAskingErros, passAnswerErros);
         }
     }
 
