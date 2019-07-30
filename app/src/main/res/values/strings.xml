@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Donation</string>
+    <string name="app_name">Flood</string>
 
-    <string name="activity_login_name">Identifique-se</string>
+    <string name="activity_login_name">Flood</string>
     <string name="activity_change_password_name">Troque sua Senha</string>
     <string name="activity_simple_change_password_name">Trocar Senha</string>
     <string name="activity_join_name">Cadastre-se</string>
